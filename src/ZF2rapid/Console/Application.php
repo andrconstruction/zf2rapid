@@ -35,7 +35,7 @@ class Application extends ZFApplication
     /**
      * Version of application
      */
-    const VERSION = '0.7.0';
+    const VERSION = '0.7.1';
 
     /**
      * @var Translator
