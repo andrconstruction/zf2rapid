@@ -9,6 +9,7 @@
 namespace ZF2rapid\Task\Fetch;
 
 use Zend\Console\ColorInterface as Color;
+use Zend\EventManager\EventManager;
 use Zend\EventManager\SharedEventManager;
 use Zend\ModuleManager\Listener\DefaultListenerAggregate;
 use Zend\ModuleManager\Listener\ListenerOptions;
@@ -59,18 +60,22 @@ class LoadModules extends AbstractTask
         // sort by key
         sort($loadableModules);
 
-        // configure event listeners for module manager
+        // configure event managers
         $sharedEvents = new SharedEventManager();
+        $eventManager = new EventManager($sharedEvents);
+
+        // configure module manager
+        $moduleManager = new ModuleManager($loadableModules, $eventManager);
+
+        // configure defaukt listeners
         $defaultListeners = new DefaultListenerAggregate(
             new ListenerOptions(
                 ['module_paths' => $modulePaths]
             )
         );
+        $defaultListeners->attach($moduleManager->getEventManager());
 
-        // configure module manager
-        $moduleManager = new ModuleManager($loadableModules);
-        $moduleManager->getEventManager()->setSharedManager($sharedEvents);
-        $moduleManager->getEventManager()->attachAggregate($defaultListeners);
+        // load modules
         $moduleManager->loadModules();
 
         // set loaded modules
