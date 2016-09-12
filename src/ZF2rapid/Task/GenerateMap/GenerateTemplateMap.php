@@ -8,6 +8,9 @@
  */
 namespace ZF2rapid\Task\GenerateMap;
 
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use SplFileInfo;
 use ZF2rapid\Generator\ConfigArrayGenerator;
 use ZF2rapid\Generator\ConfigFileGenerator;
 use ZF2rapid\Task\AbstractTask;
@@ -26,56 +29,92 @@ class GenerateTemplateMap extends AbstractTask
      */
     public function processCommandTask()
     {
+        // get templates
+        $templates = scandir($this->params->moduleViewDir);
+
+        // ignore current and parent path
+        unset($templates[array_search('.', $templates)]);
+        unset($templates[array_search('..', $templates)]);
+
+
+        $entries = [];
+
         // check for project
-        if ($this->params->paramWithProject) {
+        if ($this->params->paramWithProject && !empty($templates)) {
             // output message
             $this->console->writeTaskLine(
                 'task_generate_map_template_map_running'
             );
 
-            // define generator files
-            if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-                $generator = $this->params->workingPath
-                    . '/vendor/bin/templatemap_generator.php.bat';
-                $command   = $generator . ' -l ' . $this->params->moduleDir
-                    . ' -v '
-                    . $this->params->moduleDir . DIRECTORY_SEPARATOR . 'view';
-            } else {
-                $generator = $this->params->workingPath
-                    . '/vendor/bin/templatemap_generator.php';
-                $command   = 'php ' . $generator . ' -l '
-                    . $this->params->moduleDir
-                    . ' -v ' . $this->params->moduleDir . DIRECTORY_SEPARATOR
-                    . 'view';
+            $templates = $this->findTemplateFilesInTemplatePath($this->params->moduleViewDir);
+
+            $basePath = $this->params->moduleDir . '/view';
+            $realPath = realpath($basePath);
+
+            foreach ($templates as $file) {
+                $file = str_replace('\\', '/', $file);
+
+                $template = (0 === strpos($file, $realPath))
+                    ? substr($file, strlen($realPath))
+                    : $file;
+
+                $template = (0 === strpos($template, $basePath))
+                    ? substr($template, strlen($basePath))
+                    : $template;
+
+                $template = preg_match('#(?P<template>.*?)\.[a-z0-9]+$#i', $template, $matches)
+                    ? $matches['template']
+                    : $template;
+
+                $template = preg_replace('#^\.*/#', '', $template);
+                $file     = sprintf('__DIR__ . \'%s\'', str_replace($this->params->moduleDir, '', $file));
+
+                $entries[$template] = $file;
             }
-            // create src module
-            if (!file_exists($generator)) {
-                $this->console->writeFailLine(
-                    'task_generate_map_template_map_not_exists'
-                );
-
-                return 1;
-            }
-
-            // run templatemap generator
-            exec($command, $output, $return);
-        } else {
-            // create config array
-            $config = new ConfigArrayGenerator([], $this->params);
-
-            // create file
-            $file = new ConfigFileGenerator(
-                $config->generate(), $this->params->config
-            );
-
-            // setup map file
-            $mapFile = $this->params->moduleDir . DIRECTORY_SEPARATOR
-                . 'template_map.php';
-
-            // write file
-            file_put_contents($mapFile, $file->generate());
         }
+
+        // create config array
+        $config = new ConfigArrayGenerator($entries, $this->params);
+
+        // create file
+        $file = new ConfigFileGenerator(
+            $config->generate(), $this->params->config
+        );
+
+        // setup map file
+        $mapFile = $this->params->moduleDir . DIRECTORY_SEPARATOR
+            . 'template_map.php';
+
+        // write file
+        file_put_contents($mapFile, $file->generate());
 
         return 0;
     }
+
+    /**
+     * @param $templatePath
+     *
+     * @return array
+     */
+    private function findTemplateFilesInTemplatePath($templatePath)
+    {
+        $rdi = new RecursiveDirectoryIterator($templatePath, RecursiveDirectoryIterator::FOLLOW_SYMLINKS);
+        $rii = new RecursiveIteratorIterator($rdi, RecursiveIteratorIterator::LEAVES_ONLY);
+
+        $files = [];
+        foreach ($rii as $file) {
+            if (! $file instanceof SplFileInfo) {
+                continue;
+            }
+
+            if (! preg_match('#^phtml$#i', $file->getExtension())) {
+                continue;
+            }
+
+            $files[] = $file->getPathname();
+        }
+
+        return $files;
+    }
+
 }
