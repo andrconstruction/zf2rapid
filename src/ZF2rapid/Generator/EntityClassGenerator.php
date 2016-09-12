@@ -147,8 +147,9 @@ class EntityClassGenerator extends ClassGenerator
         /** @var $tableColumn ColumnObject */
         foreach ($this->tableData['columns'] as $tableColumn) {
             if (isset($foreignKeys[$tableColumn->getName()])) {
-                $type = ucfirst($foreignKeys[$tableColumn->getName()])
-                    . 'Entity';
+                $type = StaticFilter::execute(
+                        $foreignKeys[$tableColumn->getName()], 'Word\UnderscoreToCamelCase'
+                    ) . 'Entity';
             } else {
                 switch ($tableColumn->getDataType()) {
                     case 'varchar':
@@ -203,7 +204,12 @@ class EntityClassGenerator extends ClassGenerator
         /** @var ConstraintObject $primaryKey */
         $primaryKey = $this->tableData['primaryKey'];
 
-        return $primaryKey->getColumns();
+        $columns = $primaryKey->getColumns();
+        foreach ($columns as $key => $column) {
+            $columns[$key] = lcfirst(StaticFilter::execute($column, 'Word\UnderscoreToCamelCase'));
+        }
+
+        return $columns;
     }
 
     /**
@@ -296,7 +302,7 @@ class EntityClassGenerator extends ClassGenerator
      */
     protected function generateSetMethod($columnName, $columnType)
     {
-        if (in_array($columnType, ['string', 'integer'])) {
+        if (in_array($columnType, ['string', 'integer', 'boolean'])) {
             $body = '$this->' . $columnName . ' = (' . $columnType . ') $'
                 . $columnName . ';';
 
