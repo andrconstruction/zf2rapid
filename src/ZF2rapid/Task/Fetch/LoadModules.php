@@ -148,7 +148,7 @@ class LoadModules extends AbstractTask
             $configFile = $this->params->projectConfigDir . '/' . $configFile;
 
             // create src module
-            if (!file_exists($configFile)) {
+            if (!file_exists($configFile) || is_dir($configFile)) {
                 continue;
             }
 
