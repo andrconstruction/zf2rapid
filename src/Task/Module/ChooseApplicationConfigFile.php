@@ -47,6 +47,15 @@ class ChooseApplicationConfigFile extends AbstractTask
                 array_diff(scandir($this->params->projectConfigDir), $filterDirs)
             );
 
+            // remove dirs
+            foreach ($configFiles as $key => $configFile) {
+                if (is_dir($this->params->projectConfigDir . '/' . $configFile)) {
+                    unset ($configFiles[$key]);
+                }
+            }
+
+            $configFiles = array_values($configFiles);
+
             // set indention
             $spaces = Console::INDENTION_PROMPT_OPTIONS;
 

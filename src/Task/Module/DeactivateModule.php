@@ -63,6 +63,15 @@ class DeactivateModule extends AbstractTask
             );
         }
 
+        // remove dirs
+        foreach ($configFiles as $key => $configFile) {
+            if (is_dir($this->params->projectConfigDir . '/' . $configFile)) {
+                unset ($configFiles[$key]);
+            }
+        }
+
+        $configFiles = array_values($configFiles);
+
         // loop through config files
         foreach ($configFiles as $configFile) {
             $configFile = $this->params->projectConfigDir . '/' . $configFile;

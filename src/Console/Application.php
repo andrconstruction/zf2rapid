@@ -8,6 +8,7 @@
  */
 namespace ZF2rapid\Console;
 
+use Traversable;
 use Zend\Console\Adapter\AdapterInterface;
 use Zend\Console\ColorInterface as Color;
 use Zend\I18n\Translator\Translator;
@@ -45,12 +46,15 @@ class Application extends ZFApplication
     /**
      * Overwritten constructor to simplify application instantiation
      *
-     * @param string $routes
-     * @param ConsoleInterface $console
-     * @param Dispatcher $dispatcher
+     * @param array|Traversable $routes
+     * @param ConsoleInterface  $console
+     * @param Translator        $translator
+     * @param Dispatcher        $dispatcher
      */
     public function __construct(
-        $routes, ConsoleInterface $console, Translator $translator = null,
+        $routes,
+        ConsoleInterface $console,
+        Translator $translator = null,
         Dispatcher $dispatcher = null
     ) {
         if ($translator) {
@@ -95,6 +99,7 @@ class Application extends ZFApplication
      * Make sure that banner and footer are not shown for autoload command
      *
      * @param array $args
+     *
      * @return int
      */
     public function run(array $args = null)
@@ -102,8 +107,16 @@ class Application extends ZFApplication
         global $argv;
 
         if (isset($argv[1]) && $argv[1] == 'autocomplete' && !isset($argv[2])) {
-            $this->setBanner(function () {return 0;});
-            $this->setFooter(function () {return 0;});
+            $this->setBanner(
+                function () {
+                    return 0;
+                }
+            );
+            $this->setFooter(
+                function () {
+                    return 0;
+                }
+            );
         }
 
         return parent::run($args);

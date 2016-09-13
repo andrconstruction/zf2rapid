@@ -674,6 +674,4 @@ class Console implements AdapterInterface, ConsoleInterface
             $message, $placeholders, 'badge_todo', Color::GREEN, false, true
         );
     }
-
-
 }
