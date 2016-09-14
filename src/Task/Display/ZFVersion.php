@@ -10,7 +10,7 @@ namespace ZF2rapid\Task\Display;
 
 use Zend\Console\ColorInterface as Color;
 use Zend\Version\Version;
-use ZF2rapid\Task\AbstractTask;
+use ZFrapidCore\Task\AbstractTask;
 
 /**
  * Class ZFVersion

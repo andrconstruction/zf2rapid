@@ -10,7 +10,7 @@ namespace ZF2rapid\Task\Fetch;
 
 use ReflectionMethod;
 use Zend\Code\Reflection\ClassReflection;
-use ZF2rapid\Task\AbstractTask;
+use ZFrapidCore\Task\AbstractTask;
 
 /**
  * Class LoadActions

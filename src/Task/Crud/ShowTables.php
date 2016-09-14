@@ -11,7 +11,7 @@ namespace ZF2rapid\Task\Crud;
 use Zend\Console\ColorInterface as Color;
 use Zend\Db\Adapter\Adapter;
 use Zend\Db\Metadata\Metadata;
-use ZF2rapid\Task\AbstractTask;
+use ZFrapidCore\Task\AbstractTask;
 
 /**
  * Class ShowTables

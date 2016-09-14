@@ -10,7 +10,7 @@ namespace ZF2rapid\Task\Module;
 
 use ZF2rapid\Generator\ClassFileGenerator;
 use ZF2rapid\Generator\ModuleClassGenerator;
-use ZF2rapid\Task\AbstractTask;
+use ZFrapidCore\Task\AbstractTask;
 
 /**
  * Class GenerateModuleClass

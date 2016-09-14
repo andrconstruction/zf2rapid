@@ -10,7 +10,7 @@ namespace ZF2rapid\Task\Install;
 
 use Zend\Console\ColorInterface as Color;
 use ZFrapidCore\Console\Console;
-use ZF2rapid\Task\AbstractTask;
+use ZFrapidCore\Task\AbstractTask;
 
 /**
  * Class ChooseSkeletonApplication

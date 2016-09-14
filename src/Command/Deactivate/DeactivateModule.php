@@ -9,7 +9,7 @@
 namespace ZF2rapid\Command\Deactivate;
 
 use Zend\Console\ColorInterface as Color;
-use ZF2rapid\Command\AbstractCommand;
+use ZFrapidCore\Command\AbstractCommand;
 
 /**
  * Class DeactivateModule

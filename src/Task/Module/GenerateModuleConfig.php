@@ -10,7 +10,7 @@ namespace ZF2rapid\Task\Module;
 
 use ZF2rapid\Generator\ConfigArrayGenerator;
 use ZF2rapid\Generator\ConfigFileGenerator;
-use ZF2rapid\Task\AbstractTask;
+use ZFrapidCore\Task\AbstractTask;
 
 /**
  * Class GenerateModuleConfig

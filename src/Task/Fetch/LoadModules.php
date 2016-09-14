@@ -14,7 +14,7 @@ use Zend\EventManager\SharedEventManager;
 use Zend\ModuleManager\Listener\DefaultListenerAggregate;
 use Zend\ModuleManager\Listener\ListenerOptions;
 use Zend\ModuleManager\ModuleManager;
-use ZF2rapid\Task\AbstractTask;
+use ZFrapidCore\Task\AbstractTask;
 
 /**
  * Class LoadModules

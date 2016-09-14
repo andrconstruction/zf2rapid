@@ -10,7 +10,7 @@ namespace ZF2rapid\Task\Install;
 
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
-use ZF2rapid\Task\AbstractTask;
+use ZFrapidCore\Task\AbstractTask;
 
 /**
  * Class PrepareProject

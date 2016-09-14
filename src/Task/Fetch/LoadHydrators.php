@@ -11,7 +11,7 @@ namespace ZF2rapid\Task\Fetch;
 use Zend\Code\Reflection\ClassReflection;
 use Zend\Code\Reflection\DocBlock\Tag\ReturnTag;
 use Zend\Console\ColorInterface as Color;
-use ZF2rapid\Task\AbstractTask;
+use ZFrapidCore\Task\AbstractTask;
 
 /**
  * Class LoadHydrators

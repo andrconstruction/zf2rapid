@@ -7,8 +7,8 @@
  * @license     http://opensource.org/licenses/MIT The MIT License (MIT)
  */
 use ZF\Console\Filter\Explode as ExplodeFilter;
-use ZF2rapid\Filter\NormalizeList as NormalizeListFilter;
-use ZF2rapid\Filter\NormalizeParam as NormalizeParamFilter;
+use ZFrapidCore\Filter\NormalizeList as NormalizeListFilter;
+use ZFrapidCore\Filter\NormalizeParam as NormalizeParamFilter;
 
 return [
     [

@@ -11,7 +11,7 @@ namespace ZF2rapid\Task\Crud;
 use Zend\Console\ColorInterface as Color;
 use ZF2rapid\Generator\ClassFileGenerator;
 use ZF2rapid\Generator\Crud\ControllerFactoryGenerator;
-use ZF2rapid\Task\AbstractTask;
+use ZFrapidCore\Task\AbstractTask;
 
 /**
  * Class GenerateControllerFactories

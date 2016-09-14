@@ -15,7 +15,7 @@ use ZF2rapid\Generator\Crud\DeleteActionViewGenerator;
 use ZF2rapid\Generator\Crud\IndexActionViewGenerator;
 use ZF2rapid\Generator\Crud\ShowActionViewGenerator;
 use ZF2rapid\Generator\Crud\UpdateActionViewGenerator;
-use ZF2rapid\Task\AbstractTask;
+use ZFrapidCore\Task\AbstractTask;
 
 /**
  * Class GenerateViews

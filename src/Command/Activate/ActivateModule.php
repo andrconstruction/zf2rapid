@@ -9,7 +9,7 @@
 namespace ZF2rapid\Command\Activate;
 
 use Zend\Console\ColorInterface as Color;
-use ZF2rapid\Command\AbstractCommand;
+use ZFrapidCore\Command\AbstractCommand;
 
 /**
  * Class ActivateModule

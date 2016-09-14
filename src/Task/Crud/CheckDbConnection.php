@@ -12,7 +12,7 @@ use Zend\Config\Factory as ConfigFactory;
 use Zend\Db\Adapter\Adapter;
 use Zend\Db\Adapter\Exception\InvalidArgumentException;
 use Zend\Db\Adapter\Exception\RuntimeException;
-use ZF2rapid\Task\AbstractTask;
+use ZFrapidCore\Task\AbstractTask;
 
 /**
  * Class CheckDbConnection

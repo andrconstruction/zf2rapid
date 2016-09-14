@@ -8,7 +8,7 @@
  */
 namespace ZF2rapid\Command\Tool;
 
-use ZF2rapid\Command\AbstractCommand;
+use ZFrapidCore\Command\AbstractCommand;
 
 /**
  * Class ToolConfiguration

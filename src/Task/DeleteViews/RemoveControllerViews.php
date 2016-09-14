@@ -8,7 +8,7 @@
  */
 namespace ZF2rapid\Task\DeleteViews;
 
-use ZF2rapid\Task\AbstractTask;
+use ZFrapidCore\Task\AbstractTask;
 
 /**
  * Class RemoveControllerViews

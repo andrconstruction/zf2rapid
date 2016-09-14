@@ -11,7 +11,7 @@ namespace ZF2rapid\Task\GenerateFactory;
 use Zend\Console\ColorInterface as Color;
 use ZF2rapid\Generator\ClassFileGenerator;
 use ZF2rapid\Generator\FactoryGenerator;
-use ZF2rapid\Task\AbstractTask;
+use ZFrapidCore\Task\AbstractTask;
 
 /**
  * Class GenerateControllerPluginFactory

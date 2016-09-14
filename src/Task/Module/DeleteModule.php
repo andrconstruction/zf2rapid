@@ -11,7 +11,7 @@ namespace ZF2rapid\Task\Module;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use Zend\Console\ColorInterface as Color;
-use ZF2rapid\Task\AbstractTask;
+use ZFrapidCore\Task\AbstractTask;
 
 /**
  * Class DeleteModule

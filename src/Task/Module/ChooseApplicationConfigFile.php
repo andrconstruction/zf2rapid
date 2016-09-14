@@ -9,7 +9,7 @@
 namespace ZF2rapid\Task\Module;
 
 use ZFrapidCore\Console\Console;
-use ZF2rapid\Task\AbstractTask;
+use ZFrapidCore\Task\AbstractTask;
 
 /**
  * Class ChooseApplicationConfigFile

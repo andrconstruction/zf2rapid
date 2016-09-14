@@ -14,7 +14,7 @@ use Zend\Db\Metadata\Metadata;
 use Zend\Db\Metadata\Object\ColumnObject;
 use Zend\Db\Metadata\Object\ConstraintObject;
 use Zend\Db\Metadata\Object\TableObject;
-use ZF2rapid\Task\AbstractTask;
+use ZFrapidCore\Task\AbstractTask;
 
 /**
  * Class LoadTables
