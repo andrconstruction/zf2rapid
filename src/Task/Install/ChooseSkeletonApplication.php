@@ -3,14 +3,14 @@
  * ZF2rapid - Zend Framework 2 Rapid Development Tool
  *
  * @link      https://github.com/ZFrapid/zf2rapid
- * @copyright Copyright (c) 2014 - 2015 Ralf Eggert
+ * @copyright Copyright (c) 2014 - 2016 Ralf Eggert
  * @license   http://opensource.org/licenses/MIT The MIT License (MIT)
  */
 namespace ZF2rapid\Task\Install;
 
 use Zend\Console\ColorInterface as Color;
-use ZF2rapid\Console\Console;
-use ZF2rapid\Task\AbstractTask;
+use ZFrapidCore\Console\Console;
+use ZFrapidCore\Task\AbstractTask;
 
 /**
  * Class ChooseSkeletonApplication
@@ -22,7 +22,7 @@ class ChooseSkeletonApplication extends AbstractTask
     /**
      * URL to Zend Framework 2 Skeleton Application
      */
-    const ZF2_SKELETON_URL = 'https://github.com/zendframework/ZendSkeletonApplication/archive/master.zip';
+    const ZF2_SKELETON_URL = 'https://github.com/zendframework/ZendSkeletonApplication/archive/release-2.5.0.zip';
 
     /**
      * URL to ZF2rapid Skeleton Application

@@ -3,12 +3,12 @@
  * ZF2rapid - Zend Framework 2 Rapid Development Tool
  *
  * @link        https://github.com/ZFrapid/zf2rapid
- * @copyright   Copyright (c) 2014 - 2015 Ralf Eggert
+ * @copyright   Copyright (c) 2014 - 2016 Ralf Eggert
  * @license     http://opensource.org/licenses/MIT The MIT License (MIT)
  */
 use ZF\Console\Filter\Explode as ExplodeFilter;
-use ZF2rapid\Filter\NormalizeList as NormalizeListFilter;
-use ZF2rapid\Filter\NormalizeParam as NormalizeParamFilter;
+use ZFrapidCore\Filter\NormalizeList as NormalizeListFilter;
+use ZFrapidCore\Filter\NormalizeParam as NormalizeParamFilter;
 
 return [
     [

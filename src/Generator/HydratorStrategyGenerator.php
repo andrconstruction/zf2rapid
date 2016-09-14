@@ -3,7 +3,7 @@
  * ZF2rapid - Zend Framework 2 Rapid Development Tool
  *
  * @link      https://github.com/ZFrapid/zf2rapid
- * @copyright Copyright (c) 2014 - 2015 Ralf Eggert
+ * @copyright Copyright (c) 2014 - 2016 Ralf Eggert
  * @license   http://opensource.org/licenses/MIT The MIT License (MIT)
  */
 namespace ZF2rapid\Generator;
@@ -18,6 +18,7 @@ use Zend\Code\Generator\MethodGenerator;
 use Zend\Code\Generator\ParameterGenerator;
 use Zend\Db\Metadata\Object\ColumnObject;
 use Zend\Stdlib\Parameters;
+use ZF2rapid\Generator\ClassGenerator\ClassGeneratorInterface;
 
 /**
  * Class HydratorStrategyGenerator

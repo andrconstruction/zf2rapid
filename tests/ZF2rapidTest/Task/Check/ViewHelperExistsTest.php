@@ -3,7 +3,7 @@
  * ZF2rapid - Zend Framework 2 Rapid Development Tool
  *
  * @link      https://github.com/ZFrapid/zf2rapid
- * @copyright Copyright (c) 2014 - 2015 Ralf Eggert
+ * @copyright Copyright (c) 2014 - 2016 Ralf Eggert
  * @license   http://opensource.org/licenses/MIT The MIT License (MIT)
  */
 namespace ZF2rapidTest\Task\Setup;
@@ -12,7 +12,7 @@ use PHPUnit_Framework_MockObject_MockObject;
 use PHPUnit_Framework_TestCase;
 use Zend\Stdlib\Parameters;
 use ZF\Console\Route;
-use ZF2rapid\Console\ConsoleInterface;
+use ZFrapidCore\Console\ConsoleInterface;
 use ZF2rapid\Task\Check\ViewHelperExists;
 
 /**
@@ -63,7 +63,7 @@ class ViewHelperExistsTest extends PHPUnit_Framework_TestCase
             ->getMock();
 
         $this->console = $this->getMockBuilder(
-            'ZF2rapid\Console\ConsoleInterface'
+            'ZFrapidCore\Console\ConsoleInterface'
         )->getMock();
 
         $this->parameters = new Parameters();

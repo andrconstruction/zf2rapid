@@ -3,15 +3,15 @@
  * ZF2rapid - Zend Framework 2 Rapid Development Tool
  *
  * @link      https://github.com/ZFrapid/zf2rapid
- * @copyright Copyright (c) 2014 - 2015 Ralf Eggert
+ * @copyright Copyright (c) 2014 - 2016 Ralf Eggert
  * @license   http://opensource.org/licenses/MIT The MIT License (MIT)
  */
 namespace ZF2rapid\Task\GenerateClass;
 
 use Zend\Console\ColorInterface as Color;
-use ZF2rapid\Generator\ClassFileGenerator;
-use ZF2rapid\Generator\ClassGeneratorInterface;
-use ZF2rapid\Task\AbstractTask;
+use ZF2rapid\Generator\ClassGenerator\ClassGeneratorInterface;
+use ZF2rapid\Generator\FileGenerator\ClassFileGenerator;
+use ZFrapidCore\Task\AbstractTask;
 
 /**
  * Class GenerateControllerPluginClass
@@ -32,7 +32,8 @@ abstract class AbstractGenerateClass extends AbstractTask
      * @return bool
      */
     protected function generateClass(
-        $classDir, $className, $classText, ClassGeneratorInterface $generator, $fileCheck = true
+        $classDir, $className, $classText, ClassGeneratorInterface $generator,
+        $fileCheck = true
     ) {
         // output message
         $this->console->writeTaskLine(
