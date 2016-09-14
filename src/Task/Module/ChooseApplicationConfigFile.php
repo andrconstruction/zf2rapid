@@ -8,7 +8,7 @@
  */
 namespace ZF2rapid\Task\Module;
 
-use ZF2rapid\Console\Console;
+use ZFrapidCore\Console\Console;
 use ZF2rapid\Task\AbstractTask;
 
 /**

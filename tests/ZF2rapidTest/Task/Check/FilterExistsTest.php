@@ -12,7 +12,7 @@ use PHPUnit_Framework_MockObject_MockObject;
 use PHPUnit_Framework_TestCase;
 use Zend\Stdlib\Parameters;
 use ZF\Console\Route;
-use ZF2rapid\Console\ConsoleInterface;
+use ZFrapidCore\Console\ConsoleInterface;
 use ZF2rapid\Task\Check\FilterExists;
 
 /**
@@ -63,7 +63,7 @@ class FilterExistsTest extends PHPUnit_Framework_TestCase
             ->getMock();
 
         $this->console = $this->getMockBuilder(
-            'ZF2rapid\Console\ConsoleInterface'
+            'ZFrapidCore\Console\ConsoleInterface'
         )->getMock();
 
         $this->parameters = new Parameters();

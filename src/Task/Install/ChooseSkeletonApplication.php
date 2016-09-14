@@ -9,7 +9,7 @@
 namespace ZF2rapid\Task\Install;
 
 use Zend\Console\ColorInterface as Color;
-use ZF2rapid\Console\Console;
+use ZFrapidCore\Console\Console;
 use ZF2rapid\Task\AbstractTask;
 
 /**

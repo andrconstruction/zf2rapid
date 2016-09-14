@@ -11,7 +11,7 @@ namespace ZF2rapid\Command;
 use Zend\Stdlib\Parameters;
 use ZF\Console\Route;
 use ZF2rapid\Task\TaskInterface;
-use ZF2rapid\Console\ConsoleInterface;
+use ZFrapidCore\Console\ConsoleInterface;
 
 /**
  * Class AbstractCommand

@@ -10,7 +10,7 @@
 
 use Zend\I18n\Translator\Translator;
 use ZF2rapid\Console\Application;
-use ZF2rapid\Console\Console;
+use ZFrapidCore\Console\Console;
 
 // define application root
 define('ZF2RAPID_ROOT', __DIR__ . '/..');

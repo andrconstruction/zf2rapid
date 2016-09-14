@@ -13,7 +13,7 @@
  */
 namespace ZF2rapid\Command;
 
-use ZF2rapid\Console\ConsoleInterface;
+use ZFrapidCore\Console\ConsoleInterface;
 use ZF\Console\Route;
 
 /**
