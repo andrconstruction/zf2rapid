@@ -8,7 +8,7 @@
  */
 namespace ZF2rapid\Task\GenerateClass;
 
-use ZF2rapid\Generator\ViewHelperClassGenerator;
+use ZF2rapid\Generator\ClassGenerator\ViewHelperClassGenerator;
 
 /**
  * Class GenerateViewHelperClass

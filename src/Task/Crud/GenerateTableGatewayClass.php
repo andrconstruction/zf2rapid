@@ -8,7 +8,7 @@
  */
 namespace ZF2rapid\Task\Crud;
 
-use ZF2rapid\Generator\TableGatewayClassGenerator;
+use ZF2rapid\Generator\ClassGenerator\TableGatewayClassGenerator;
 use ZF2rapid\Task\GenerateClass\AbstractGenerateClass;
 
 /**

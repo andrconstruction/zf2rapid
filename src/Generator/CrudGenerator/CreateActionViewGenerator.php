@@ -6,17 +6,17 @@
  * @copyright Copyright (c) 2014 - 2016 Ralf Eggert
  * @license   http://opensource.org/licenses/MIT The MIT License (MIT)
  */
-namespace ZF2rapid\Generator\Crud;
+namespace ZF2rapid\Generator\CrudGenerator;
 
 use Zend\Code\Generator\AbstractGenerator;
 use Zend\Code\Reflection\ClassReflection;
 
 /**
- * Class UpdateActionViewGenerator
+ * Class CreateActionViewGenerator
  *
- * @package ZF2rapid\Generator\Crud
+ * @package ZF2rapid\Generator\CrudGenerator
  */
-class UpdateActionViewGenerator extends AbstractActionViewGenerator
+class CreateActionViewGenerator extends AbstractActionViewGenerator
 {
     /**
      * Generate view content
@@ -28,22 +28,15 @@ class UpdateActionViewGenerator extends AbstractActionViewGenerator
     {
         // prepare some params
         $moduleIdentifier = $this->filterCamelCaseToUnderscore($moduleName);
-        $entityName       = $loadedEntity->getShortName();
-        $entityParam      = lcfirst($entityName);
         $formParam        = lcfirst(str_replace('Entity', '', $loadedEntity->getShortName())) . 'DataForm';
         $moduleRoute      = $this->filterCamelCaseToDash($moduleName);
 
         // set action body
         $body   = [];
-        $body[] = 'use ' . $loadedEntity->getName() . ';';
-        $body[] = '';
-        $body[] = '/** @var ' . $entityName . ' $' . $entityParam . ' */';
-        $body[] = '$' . $entityParam . ' = $this->' . $entityParam . ';';
-        $body[] = '';
-        $body[] = '$this->h1(\'' . $moduleIdentifier . '_title_update\');';
+        $body[] = '$this->h1(\'' . $moduleIdentifier . '_title_create\');';
         $body[] = '';
         $body[] = '$this->' . $formParam . '->setAttribute(\'action\', $this->url(\'' . $moduleRoute
-            . '/update\', [\'id\' => $' . $entityParam . '->getIdentifier()]));';
+            . '/create\'));';
         $body[] = '';
         $body[] = 'echo $this->bootstrapForm($this->' . $formParam . ');';
         $body[] = '?>';

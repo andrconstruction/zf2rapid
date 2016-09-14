@@ -6,20 +6,21 @@
  * @copyright Copyright (c) 2014 - 2016 Ralf Eggert
  * @license   http://opensource.org/licenses/MIT The MIT License (MIT)
  */
-namespace ZF2rapid\Generator;
+namespace ZF2rapid\Generator\ClassGenerator;
 
 use Zend\Code\Generator\AbstractGenerator;
 use Zend\Code\Generator\ClassGenerator;
 use Zend\Code\Generator\DocBlock\Tag\GenericTag;
+use Zend\Code\Generator\DocBlock\Tag\ReturnTag;
 use Zend\Code\Generator\DocBlockGenerator;
 use Zend\Code\Generator\MethodGenerator;
 
 /**
- * Class InputFilterClassGenerator
+ * Class ViewHelperClassGenerator
  *
- * @package ZF2rapid\Generator
+ * @package ZF2rapid\Generator\ClassGenerator
  */
-class InputFilterClassGenerator extends ClassGenerator
+class ViewHelperClassGenerator extends ClassGenerator
     implements ClassGeneratorInterface
 {
     /**
@@ -50,32 +51,32 @@ class InputFilterClassGenerator extends ClassGenerator
         // set name and namespace
         $this->setName($className);
         $this->setNamespaceName(
-            $moduleName . '\\' . $this->config['namespaceInputFilter']
+            $moduleName . '\\' . $this->config['namespaceViewHelper']
         );
 
         // add used namespaces and extended classes
-        $this->addUse('Zend\InputFilter\InputFilter');
-        $this->setExtendedClass('InputFilter');
+        $this->addUse('Zend\View\Helper\AbstractHelper');
+        $this->setExtendedClass('AbstractHelper');
 
         // add methods
-        $this->addInitMethod();
+        $this->addInvokeMethod();
         $this->addClassDocBlock($className, $moduleName);
     }
 
     /**
      * Add a class doc block
      *
-     * @param string $className
+     * @param string $viewHelperName
      * @param string $moduleName
      */
-    protected function addClassDocBlock($className, $moduleName)
+    protected function addClassDocBlock($viewHelperName, $moduleName)
     {
         // check for api docs
         if ($this->config['flagAddDocBlocks']) {
             $this->setDocBlock(
                 new DocBlockGenerator(
                     $this->getName(),
-                    'Provides the ' . $className . ' input filter for the '
+                    'Provides the ' . $viewHelperName . ' view helper for the '
                     . $moduleName . ' Module',
                     [
                         new GenericTag('package', $this->getNamespaceName()),
@@ -86,26 +87,33 @@ class InputFilterClassGenerator extends ClassGenerator
     }
 
     /**
-     * Generate an init method
+     * Generate an __invoke method
      */
-    protected function addInitMethod()
+    protected function addInvokeMethod()
     {
         // set action body
         $body = [
-            '// add input objects here',
+            '// add view helper code here',
+            '$output = \'\';',
+            '',
+            'return $output;',
         ];
         $body = implode(AbstractGenerator::LINE_FEED, $body);
 
         // create method
         $method = new MethodGenerator();
-        $method->setName('init');
+        $method->setName('__invoke');
         $method->setBody($body);
 
         // check for api docs
         if ($this->config['flagAddDocBlocks']) {
             $method->setDocBlock(
                 new DocBlockGenerator(
-                    'Generate input filter by adding inputs'
+                    'Called when view helper is executed',
+                    null,
+                    [
+                        new ReturnTag(['string']),
+                    ]
                 )
             );
         }

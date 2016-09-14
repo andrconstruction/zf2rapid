@@ -12,7 +12,7 @@ use Zend\Code\Reflection\ClassReflection;
 use Zend\Db\Metadata\Object\ColumnObject;
 use Zend\Db\Metadata\Object\ConstraintObject;
 use ZF2rapid\Generator\ConfigArrayGenerator;
-use ZF2rapid\Generator\ConfigFileGenerator;
+use ZF2rapid\Generator\FileGenerator\ConfigFileGenerator;
 use ZFrapidCore\Task\AbstractTask;
 
 /**

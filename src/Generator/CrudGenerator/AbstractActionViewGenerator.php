@@ -6,7 +6,7 @@
  * @copyright Copyright (c) 2014 - 2016 Ralf Eggert
  * @license   http://opensource.org/licenses/MIT The MIT License (MIT)
  */
-namespace ZF2rapid\Generator\Crud;
+namespace ZF2rapid\Generator\CrudGenerator;
 
 use Zend\Code\Generator\BodyGenerator;
 use Zend\Code\Reflection\ClassReflection;
@@ -15,7 +15,7 @@ use Zend\Filter\StaticFilter;
 /**
  * Abstract Class AbstractActionViewGenerator
  *
- * @package ZF2rapid\Generator\Crud
+ * @package ZF2rapid\Generator\CrudGenerator
  */
 abstract class AbstractActionViewGenerator extends BodyGenerator
 {

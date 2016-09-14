@@ -6,7 +6,7 @@
  * @copyright Copyright (c) 2014 - 2016 Ralf Eggert
  * @license   http://opensource.org/licenses/MIT The MIT License (MIT)
  */
-namespace ZF2rapid\Generator;
+namespace ZF2rapid\Generator\ClassGenerator;
 
 use Zend\Code\Generator\AbstractGenerator;
 use Zend\Code\Generator\ClassGenerator;
@@ -15,11 +15,11 @@ use Zend\Code\Generator\DocBlockGenerator;
 use Zend\Code\Generator\MethodGenerator;
 
 /**
- * Class FormClassGenerator
+ * Class InputFilterClassGenerator
  *
- * @package ZF2rapid\Generator
+ * @package ZF2rapid\Generator\ClassGenerator
  */
-class FormClassGenerator extends ClassGenerator
+class InputFilterClassGenerator extends ClassGenerator
     implements ClassGeneratorInterface
 {
     /**
@@ -50,12 +50,12 @@ class FormClassGenerator extends ClassGenerator
         // set name and namespace
         $this->setName($className);
         $this->setNamespaceName(
-            $moduleName . '\\' . $this->config['namespaceForm']
+            $moduleName . '\\' . $this->config['namespaceInputFilter']
         );
 
         // add used namespaces and extended classes
-        $this->addUse('Zend\Form\Form');
-        $this->setExtendedClass('Form');
+        $this->addUse('Zend\InputFilter\InputFilter');
+        $this->setExtendedClass('InputFilter');
 
         // add methods
         $this->addInitMethod();
@@ -75,7 +75,7 @@ class FormClassGenerator extends ClassGenerator
             $this->setDocBlock(
                 new DocBlockGenerator(
                     $this->getName(),
-                    'Provides the ' . $className . ' form for the '
+                    'Provides the ' . $className . ' input filter for the '
                     . $moduleName . ' Module',
                     [
                         new GenericTag('package', $this->getNamespaceName()),
@@ -92,7 +92,7 @@ class FormClassGenerator extends ClassGenerator
     {
         // set action body
         $body = [
-            '// add form elements and form configuration here',
+            '// add input objects here',
         ];
         $body = implode(AbstractGenerator::LINE_FEED, $body);
 
@@ -105,7 +105,7 @@ class FormClassGenerator extends ClassGenerator
         if ($this->config['flagAddDocBlocks']) {
             $method->setDocBlock(
                 new DocBlockGenerator(
-                    'Generate form by adding elements'
+                    'Generate input filter by adding inputs'
                 )
             );
         }

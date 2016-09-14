@@ -12,7 +12,7 @@ use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use SplFileInfo;
 use ZF2rapid\Generator\ConfigArrayGenerator;
-use ZF2rapid\Generator\ConfigFileGenerator;
+use ZF2rapid\Generator\FileGenerator\ConfigFileGenerator;
 use ZFrapidCore\Task\AbstractTask;
 
 /**

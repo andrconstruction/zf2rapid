@@ -18,6 +18,7 @@ use Zend\Code\Generator\MethodGenerator;
 use Zend\Code\Generator\ParameterGenerator;
 use Zend\Db\Metadata\Object\ColumnObject;
 use Zend\Stdlib\Parameters;
+use ZF2rapid\Generator\ClassGenerator\ClassGeneratorInterface;
 
 /**
  * Class HydratorStrategyGenerator

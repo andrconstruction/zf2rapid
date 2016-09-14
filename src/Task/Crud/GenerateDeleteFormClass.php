@@ -8,7 +8,7 @@
  */
 namespace ZF2rapid\Task\Crud;
 
-use ZF2rapid\Generator\Crud\DeleteFormClassGenerator;
+use ZF2rapid\Generator\CrudGenerator\DeleteFormClassGenerator;
 use ZF2rapid\Task\GenerateClass\AbstractGenerateClass;
 
 /**

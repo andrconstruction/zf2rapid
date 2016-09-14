@@ -12,7 +12,7 @@ use Zend\Code\Generator\ClassGenerator;
 use Zend\Code\Reflection\FileReflection;
 use Zend\Console\ColorInterface as Color;
 use ZF2rapid\Generator\ActionMethodGenerator;
-use ZF2rapid\Generator\ClassFileGenerator;
+use ZF2rapid\Generator\FileGenerator\ClassFileGenerator;
 use ZFrapidCore\Task\AbstractTask;
 
 /**

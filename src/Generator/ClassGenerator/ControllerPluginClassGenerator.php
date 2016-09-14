@@ -6,18 +6,21 @@
  * @copyright Copyright (c) 2014 - 2016 Ralf Eggert
  * @license   http://opensource.org/licenses/MIT The MIT License (MIT)
  */
-namespace ZF2rapid\Generator;
+namespace ZF2rapid\Generator\ClassGenerator;
 
+use Zend\Code\Generator\AbstractGenerator;
 use Zend\Code\Generator\ClassGenerator;
 use Zend\Code\Generator\DocBlock\Tag\GenericTag;
+use Zend\Code\Generator\DocBlock\Tag\ReturnTag;
 use Zend\Code\Generator\DocBlockGenerator;
+use Zend\Code\Generator\MethodGenerator;
 
 /**
- * Class RepositoryClassGenerator
+ * Class ControllerPluginClassGenerator
  *
- * @package ZF2rapid\Generator
+ * @package ZF2rapid\Generator\ClassGenerator
  */
-class RepositoryClassGenerator extends ClassGenerator
+class ControllerPluginClassGenerator extends ClassGenerator
     implements ClassGeneratorInterface
 {
     /**
@@ -48,12 +51,15 @@ class RepositoryClassGenerator extends ClassGenerator
         // set name and namespace
         $this->setName($className);
         $this->setNamespaceName(
-            $moduleName . '\\' . $this->config['namespaceRepository']
+            $moduleName . '\\' . $this->config['namespaceControllerPlugin']
         );
 
         // add used namespaces and extended classes
-        $this->addUse('ZF2rapidDomain\Repository\AbstractRepository');
-        $this->setExtendedClass('AbstractRepository');
+        $this->addUse('Zend\Mvc\Controller\Plugin\AbstractPlugin');
+        $this->setExtendedClass('AbstractPlugin');
+
+        // add methods
+        $this->addInvokeMethod();
         $this->addClassDocBlock($className, $moduleName);
     }
 
@@ -70,7 +76,7 @@ class RepositoryClassGenerator extends ClassGenerator
             $this->setDocBlock(
                 new DocBlockGenerator(
                     $this->getName(),
-                    'Provides the ' . $className . ' repository for the '
+                    'Provides the ' . $className . ' plugin for the '
                     . $moduleName . ' Module',
                     [
                         new GenericTag('package', $this->getNamespaceName()),
@@ -79,4 +85,38 @@ class RepositoryClassGenerator extends ClassGenerator
             );
         }
     }
+
+    /**
+     * Generate an __invoke method
+     */
+    protected function addInvokeMethod()
+    {
+        // set action body
+        $body = [
+            '// add controller plugin code here',
+        ];
+        $body = implode(AbstractGenerator::LINE_FEED, $body);
+
+        // create method
+        $method = new MethodGenerator();
+        $method->setName('__invoke');
+        $method->setBody($body);
+
+        // check for api docs
+        if ($this->config['flagAddDocBlocks']) {
+            $method->setDocBlock(
+                new DocBlockGenerator(
+                    'Called when controller plugin is executed',
+                    null,
+                    [
+                        new ReturnTag(['mixed']),
+                    ]
+                )
+            );
+        }
+
+        // add method
+        $this->addMethodFromGenerator($method);
+    }
+
 }

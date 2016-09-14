@@ -8,7 +8,7 @@
  */
 namespace ZF2rapid\Task\GenerateClass;
 
-use ZF2rapid\Generator\HydratorClassGenerator;
+use ZF2rapid\Generator\ClassGenerator\HydratorClassGenerator;
 
 /**
  * Class GenerateHydratorClass

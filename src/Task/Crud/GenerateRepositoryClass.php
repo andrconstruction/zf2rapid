@@ -8,7 +8,7 @@
  */
 namespace ZF2rapid\Task\Crud;
 
-use ZF2rapid\Generator\RepositoryClassGenerator;
+use ZF2rapid\Generator\ClassGenerator\RepositoryClassGenerator;
 use ZF2rapid\Task\GenerateClass\AbstractGenerateClass;
 
 /**

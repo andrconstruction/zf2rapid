@@ -11,7 +11,7 @@ namespace ZF2rapid\Task\GenerateAction;
 use Zend\Console\ColorInterface as Color;
 use ZFrapidCore\Task\AbstractTask;
 use ZF2rapid\Generator\ActionViewGenerator;
-use ZF2rapid\Generator\ClassFileGenerator;
+use ZF2rapid\Generator\FileGenerator\ClassFileGenerator;
 
 /**
  * Class GenerateActionView

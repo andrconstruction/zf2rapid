@@ -10,7 +10,7 @@ namespace ZF2rapid\Task\Crud;
 
 use Zend\Console\ColorInterface as Color;
 use ZF2rapid\Generator\ConfigArrayGenerator;
-use ZF2rapid\Generator\ConfigFileGenerator;
+use ZF2rapid\Generator\FileGenerator\ConfigFileGenerator;
 use ZFrapidCore\Task\AbstractTask;
 
 /**

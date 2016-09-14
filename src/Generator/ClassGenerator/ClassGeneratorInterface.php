@@ -1,23 +1,19 @@
 <?php
 /**
- * zf2rapid
+ * ZF2rapid - Zend Framework 2 Rapid Development Tool
  *
- * @package    MODULENAME
- * @copyright  Copyright (c) 2014 ralf
- * @license    All rights reserved
+ * @link      https://github.com/ZFrapid/zf2rapid
+ * @copyright Copyright (c) 2014 - 2016 Ralf Eggert
+ * @license   http://opensource.org/licenses/MIT The MIT License (MIT)
  */
-
-/**
- * namespace definition and usage
- */
-namespace ZF2rapid\Generator;
+namespace ZF2rapid\Generator\ClassGenerator;
 
 use Zend\Code\Generator\GeneratorInterface;
 
 /**
  * Class ControllerPluginClassGenerator
  *
- * @package ZF2rapid\Generator
+ * @package ZF2rapid\Generator\ClassGenerator
  */
 interface ClassGeneratorInterface extends GeneratorInterface
 {

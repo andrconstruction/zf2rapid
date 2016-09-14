@@ -6,7 +6,7 @@
  * @copyright Copyright (c) 2014 - 2016 Ralf Eggert
  * @license   http://opensource.org/licenses/MIT The MIT License (MIT)
  */
-namespace ZF2rapid\Generator\Crud;
+namespace ZF2rapid\Generator\CrudGenerator;
 
 use Zend\Code\Generator\AbstractGenerator;
 use Zend\Code\Generator\ClassGenerator;
@@ -15,17 +15,16 @@ use Zend\Code\Generator\DocBlockGenerator;
 use Zend\Code\Generator\MethodGenerator;
 use Zend\Code\Generator\ParameterGenerator;
 use Zend\Code\Generator\PropertyGenerator;
-use Zend\Db\Metadata\Object\ColumnObject;
-use Zend\Db\Metadata\Object\ConstraintObject;
 use Zend\Filter\StaticFilter;
-use ZF2rapid\Generator\ClassGeneratorInterface;
+use ZF2rapid\Generator\ClassGenerator\ClassGeneratorInterface;
 
 /**
  * Class FormClassGenerator
  *
- * @package ZF2rapid\Generator\Crud
+ * @package ZF2rapid\Generator\CrudGenerator
  */
-class DataFormClassGenerator extends ClassGenerator implements ClassGeneratorInterface
+class DeleteFormClassGenerator extends ClassGenerator
+    implements ClassGeneratorInterface
 {
     /**
      * @var string
@@ -55,6 +54,7 @@ class DataFormClassGenerator extends ClassGenerator implements ClassGeneratorInt
     /**
      * @param null|string $paramModule
      * @param null|string $entityModule
+     * @param string      $entityClass
      * @param array       $loadedTables
      * @param array       $config
      */
@@ -125,139 +125,20 @@ class DataFormClassGenerator extends ClassGenerator implements ClassGeneratorInt
      */
     protected function addInitMethod($className, $moduleName)
     {
-        $tableName   = $this->filterCamelCaseToUnderscore(str_replace('Entity', '', $this->entityClass));
-        $loadedTable = $this->loadedTables[$tableName];
-        $labelPrefix = $this->filterCamelCaseToUnderscore($this->paramModule);
-
-        /** @var ConstraintObject $primaryKey */
-        $primaryKey     = $loadedTable['primaryKey'];
-        $primaryColumns = $primaryKey->getColumns();
-
-        $foreignKeys = [];
-
-        /** @var ConstraintObject $foreignKey */
-        foreach ($loadedTable['foreignKeys'] as $foreignKey) {
-            foreach ($foreignKey->getColumns() as $column) {
-                $foreignKeys[$column] = $foreignKey;
-            }
-        }
+        $tableName = $this->filterCamelCaseToUnderscore(str_replace('Entity', '', $this->entityClass));
 
         $body   = [];
         $body[] = '$this->setName(\'' . $moduleName . 'Form\');';
         $body[] = '';
 
-        /** @var ColumnObject $column */
-        foreach ($loadedTable['columns'] as $column) {
-            if (in_array($column->getName(), $primaryColumns)
-                && in_array($column->getDataType(), ['tinyint', 'smallint', 'mediumint', 'int', 'bigint'])
-            ) {
-                continue;
-            }
-
-            // determine type
-            if (isset($foreignKeys[$column->getName()])) {
-                $type = 'select';
-            } else {
-                switch ($column->getDataType()) {
-                    case 'enum':
-                        $type = 'select';
-                        break;
-
-                    case 'tinytext':
-                    case 'text':
-                    case 'mediumtext':
-                    case 'longtext':
-                        $type = 'textarea';
-                        break;
-
-                    default:
-                        $type = 'text';
-                }
-            }
-
-            $options   = [];
-            $options[] = '            \'label\' => \'' . $labelPrefix . '_label_' . $column->getName()
-                . '\',';
-
-            if (isset($foreignKeys[$column->getName()])) {
-                $this->addOptionsProperty($column->getName());
-                $this->addOptionsSetter($column->getName());
-
-                $options[] = '            \'value_options\' => $this->' . lcfirst(
-                        $this->filterUnderscoreToCamelCase($column->getName()
-                        )) . 'Options,';
-            } elseif ($column->getDataType() == 'enum') {
-                $valueOptions   = [];
-                $valueOptions[] = '[';
-
-                foreach ($column->getErrata('permitted_values') as $value) {
-                    $valueOptions[] = '                \'' . $value . '\' => \'' . $column->getTableName() . '_option_'
-                        . $column->getName() . '_' . $value . '\',';
-                }
-
-                $valueOptions[] = '            ]';
-
-                $options[] = '            \'value_options\' => ' . implode(AbstractGenerator::LINE_FEED, $valueOptions)
-                    . ',';
-            }
-
-            $attributes   = [];
-            $attributes[] = '            \'class\' => \'form-control\',';
-
-            if (isset($foreignKeys[$column->getName()])) {
-                if ($column->getColumnDefault()) {
-                    $attributes[] = '            \'value\' => \'' . $column->getColumnDefault() . '\',';
-                }
-            } elseif ($column->getDataType() == 'enum') {
-                if ($column->getColumnDefault()) {
-                    $attributes[] = '            \'value\' => \'' . $column->getColumnDefault() . '\',';
-                }
-            }
-
-            switch ($column->getDataType()) {
-                case 'tinytext':
-                    $attributes[] = '            \'rows\' => \'3\',';
-                    break;
-
-                case 'text':
-                    $attributes[] = '            \'rows\' => \'10\',';
-                    break;
-
-                case 'mediumtext':
-                case 'longtext':
-                    $attributes[] = '            \'rows\' => \'15\',';
-                    break;
-
-                default:
-            }
-
-            $body[] = '$this->add(';
-            $body[] = '    [';
-            $body[] = '        \'name\' => \'' . $column->getName() . '\',';
-            $body[] = '        \'type\' => \'' . $type . '\',';
-            $body[] = '        \'options\' => [';
-
-            $body = array_merge($body, $options);
-
-            $body[] = '        ],';
-            $body[] = '        \'attributes\' => [';
-
-            $body = array_merge($body, $attributes);
-
-            $body[] = '        ],';
-            $body[] = '    ]';
-            $body[] = ');';
-            $body[] = '';
-        }
-
         $body[] = '$this->add(';
         $body[] = '    [';
-        $body[] = '        \'name\' => \'save_' . $tableName . '\',';
+        $body[] = '        \'name\' => \'delete_' . $tableName . '\',';
         $body[] = '        \'type\' => \'Submit\',';
         $body[] = '        \'options\' => [';
         $body[] = '        ],';
         $body[] = '        \'attributes\' => [';
-        $body[] = '            \'value\' => \'' . $labelPrefix . '_action_save\',';
+        $body[] = '            \'value\' => \'' . $tableName . '_action_delete\',';
         $body[] = '            \'id\' => \'save_' . $tableName . '\',';
         $body[] = '            \'class\' => \'btn btn-success\',';
         $body[] = '        ],';
@@ -285,7 +166,6 @@ class DataFormClassGenerator extends ClassGenerator implements ClassGeneratorInt
      */
     protected function addOptionsProperty($columnName)
     {
-        $columnName = lcfirst($this->filterUnderscoreToCamelCase($columnName));
         $property = new PropertyGenerator($columnName . 'Options');
         $property->addFlag(PropertyGenerator::FLAG_PRIVATE);
         $property->setDocBlock(
@@ -309,7 +189,6 @@ class DataFormClassGenerator extends ClassGenerator implements ClassGeneratorInt
      */
     protected function addOptionsSetter($columnName)
     {
-        $columnName = lcfirst($this->filterUnderscoreToCamelCase($columnName));
         $body = '$this->' . $columnName . 'Options = $' . $columnName . 'Options;';
 
         $parameter = new ParameterGenerator($columnName . 'Options', 'array');
@@ -351,20 +230,5 @@ class DataFormClassGenerator extends ClassGenerator implements ClassGeneratorInt
 
         return $text;
     }
-
-    /**
-     * Filter underscore to camel case
-     *
-     * @param string $text
-     *
-     * @return string
-     */
-    protected function filterUnderscoreToCamelCase($text)
-    {
-        $text = StaticFilter::execute($text, 'Word\UnderscoreToCamelCase');
-
-        return $text;
-    }
-
 
 }

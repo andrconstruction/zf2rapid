@@ -8,7 +8,7 @@
  */
 namespace ZF2rapid\Task\GenerateClass;
 
-use ZF2rapid\Generator\ValidatorClassGenerator;
+use ZF2rapid\Generator\ClassGenerator\ValidatorClassGenerator;
 
 /**
  * Class GenerateValidatorClass

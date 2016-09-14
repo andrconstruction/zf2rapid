@@ -6,7 +6,7 @@
  * @copyright Copyright (c) 2014 - 2016 Ralf Eggert
  * @license   http://opensource.org/licenses/MIT The MIT License (MIT)
  */
-namespace ZF2rapid\Generator;
+namespace ZF2rapid\Generator\ClassGenerator;
 
 use Zend\Code\Generator\AbstractGenerator;
 use Zend\Code\Generator\ClassGenerator;
@@ -20,7 +20,7 @@ use Zend\Code\Generator\ParameterGenerator;
 /**
  * Class HydratorClassGenerator
  *
- * @package ZF2rapid\Generator
+ * @package ZF2rapid\Generator\ClassGenerator
  */
 class HydratorClassGenerator extends ClassGenerator
     implements ClassGeneratorInterface

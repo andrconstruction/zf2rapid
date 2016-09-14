@@ -6,7 +6,7 @@
  * @copyright Copyright (c) 2014 - 2016 Ralf Eggert
  * @license   http://opensource.org/licenses/MIT The MIT License (MIT)
  */
-namespace ZF2rapid\Generator\Crud;
+namespace ZF2rapid\Generator\CrudGenerator;
 
 use Zend\Code\Generator\AbstractGenerator;
 use Zend\Code\Reflection\ClassReflection;
@@ -14,7 +14,7 @@ use Zend\Code\Reflection\ClassReflection;
 /**
  * Class ShowActionViewGenerator
  *
- * @package ZF2rapid\Generator\Crud
+ * @package ZF2rapid\Generator\CrudGenerator
  */
 class ShowActionViewGenerator extends AbstractActionViewGenerator
 {

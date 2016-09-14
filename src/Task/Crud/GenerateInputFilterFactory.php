@@ -9,8 +9,8 @@
 namespace ZF2rapid\Task\Crud;
 
 use Zend\Console\ColorInterface as Color;
-use ZF2rapid\Generator\ClassFileGenerator;
-use ZF2rapid\Generator\Crud\InputFilterFactoryGenerator;
+use ZF2rapid\Generator\FileGenerator\ClassFileGenerator;
+use ZF2rapid\Generator\CrudGenerator\InputFilterFactoryGenerator;
 use ZFrapidCore\Task\AbstractTask;
 
 /**

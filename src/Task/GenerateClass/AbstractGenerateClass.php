@@ -9,8 +9,8 @@
 namespace ZF2rapid\Task\GenerateClass;
 
 use Zend\Console\ColorInterface as Color;
-use ZF2rapid\Generator\ClassFileGenerator;
-use ZF2rapid\Generator\ClassGeneratorInterface;
+use ZF2rapid\Generator\ClassGenerator\ClassGeneratorInterface;
+use ZF2rapid\Generator\FileGenerator\ClassFileGenerator;
 use ZFrapidCore\Task\AbstractTask;
 
 /**
@@ -32,7 +32,8 @@ abstract class AbstractGenerateClass extends AbstractTask
      * @return bool
      */
     protected function generateClass(
-        $classDir, $className, $classText, ClassGeneratorInterface $generator, $fileCheck = true
+        $classDir, $className, $classText, ClassGeneratorInterface $generator,
+        $fileCheck = true
     ) {
         // output message
         $this->console->writeTaskLine(

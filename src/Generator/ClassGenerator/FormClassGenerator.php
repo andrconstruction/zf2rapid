@@ -6,18 +6,20 @@
  * @copyright Copyright (c) 2014 - 2016 Ralf Eggert
  * @license   http://opensource.org/licenses/MIT The MIT License (MIT)
  */
-namespace ZF2rapid\Generator;
+namespace ZF2rapid\Generator\ClassGenerator;
 
+use Zend\Code\Generator\AbstractGenerator;
 use Zend\Code\Generator\ClassGenerator;
 use Zend\Code\Generator\DocBlock\Tag\GenericTag;
 use Zend\Code\Generator\DocBlockGenerator;
+use Zend\Code\Generator\MethodGenerator;
 
 /**
- * Class ControllerClassGenerator
+ * Class FormClassGenerator
  *
- * @package ZF2rapid\Generator
+ * @package ZF2rapid\Generator\ClassGenerator
  */
-class ControllerClassGenerator extends ClassGenerator
+class FormClassGenerator extends ClassGenerator
     implements ClassGeneratorInterface
 {
     /**
@@ -48,32 +50,32 @@ class ControllerClassGenerator extends ClassGenerator
         // set name and namespace
         $this->setName($className);
         $this->setNamespaceName(
-            $moduleName . '\\' . $this->config['namespaceController']
+            $moduleName . '\\' . $this->config['namespaceForm']
         );
 
         // add used namespaces and extended classes
-        $this->addUse('Zend\Mvc\Controller\AbstractActionController');
-        $this->addUse('Zend\View\Model\ViewModel');
-        $this->setExtendedClass('AbstractActionController');
+        $this->addUse('Zend\Form\Form');
+        $this->setExtendedClass('Form');
 
-        // add doc block
+        // add methods
+        $this->addInitMethod();
         $this->addClassDocBlock($className, $moduleName);
     }
 
     /**
      * Add a class doc block
      *
-     * @param string $controllerName
+     * @param string $className
      * @param string $moduleName
      */
-    protected function addClassDocBlock($controllerName, $moduleName)
+    protected function addClassDocBlock($className, $moduleName)
     {
         // check for api docs
         if ($this->config['flagAddDocBlocks']) {
             $this->setDocBlock(
                 new DocBlockGenerator(
                     $this->getName(),
-                    'Handles the ' . $controllerName . ' requests for the '
+                    'Provides the ' . $className . ' form for the '
                     . $moduleName . ' Module',
                     [
                         new GenericTag('package', $this->getNamespaceName()),
@@ -82,4 +84,34 @@ class ControllerClassGenerator extends ClassGenerator
             );
         }
     }
+
+    /**
+     * Generate an init method
+     */
+    protected function addInitMethod()
+    {
+        // set action body
+        $body = [
+            '// add form elements and form configuration here',
+        ];
+        $body = implode(AbstractGenerator::LINE_FEED, $body);
+
+        // create method
+        $method = new MethodGenerator();
+        $method->setName('init');
+        $method->setBody($body);
+
+        // check for api docs
+        if ($this->config['flagAddDocBlocks']) {
+            $method->setDocBlock(
+                new DocBlockGenerator(
+                    'Generate form by adding elements'
+                )
+            );
+        }
+
+        // add method
+        $this->addMethodFromGenerator($method);
+    }
+
 }

@@ -6,14 +6,14 @@
  * @copyright Copyright (c) 2014 - 2016 Ralf Eggert
  * @license   http://opensource.org/licenses/MIT The MIT License (MIT)
  */
-namespace ZF2rapid\Generator;
+namespace ZF2rapid\Generator\FileGenerator;
 
 /**
- * Class ConfigFileGenerator
+ * Class ClassFileGenerator
  *
- * @package ZF2rapid\Generator
+ * @package ZF2rapid\Generator\FileGenerator
  */
-class ConfigFileGenerator extends AbstractFileGenerator
+class ClassFileGenerator extends AbstractFileGenerator
 {
     /**
      * @var array
@@ -32,11 +32,8 @@ class ConfigFileGenerator extends AbstractFileGenerator
         // call parent constructor
         parent::__construct();
 
-        // convert to short array syntax
-        $fileBody = str_replace(array('array(', ')'), array('[', ']'), $fileBody);
-
         // set file body
-        $this->setBody('return ' . $fileBody . ';');
+        $this->setBody($fileBody);
 
         // add file doc block
         $this->addFileDocBlock();

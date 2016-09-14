@@ -6,7 +6,7 @@
  * @copyright Copyright (c) 2014 - 2016 Ralf Eggert
  * @license   http://opensource.org/licenses/MIT The MIT License (MIT)
  */
-namespace ZF2rapid\Generator;
+namespace ZF2rapid\Generator\FileGenerator;
 
 use Zend\Code\Generator\DocBlock\Tag\GenericTag;
 use Zend\Code\Generator\DocBlock\Tag\LicenseTag;
@@ -16,7 +16,7 @@ use Zend\Code\Generator\FileGenerator as ZendFileGenerator;
 /**
  * Class ClassFileGenerator
  *
- * @package ZF2rapid\Generator
+ * @package ZF2rapid\Generator\FileGenerator
  */
 abstract class AbstractFileGenerator extends ZendFileGenerator
 {

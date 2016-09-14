@@ -9,7 +9,7 @@
 namespace ZF2rapid\Task\GenerateMap;
 
 use ZF2rapid\Generator\ConfigArrayGenerator;
-use ZF2rapid\Generator\ConfigFileGenerator;
+use ZF2rapid\Generator\FileGenerator\ConfigFileGenerator;
 use ZFrapidCore\Task\AbstractTask;
 
 /**

@@ -9,12 +9,12 @@
 namespace ZF2rapid\Task\Crud;
 
 use Zend\Console\ColorInterface as Color;
-use ZF2rapid\Generator\ClassFileGenerator;
-use ZF2rapid\Generator\Crud\CreateActionViewGenerator;
-use ZF2rapid\Generator\Crud\DeleteActionViewGenerator;
-use ZF2rapid\Generator\Crud\IndexActionViewGenerator;
-use ZF2rapid\Generator\Crud\ShowActionViewGenerator;
-use ZF2rapid\Generator\Crud\UpdateActionViewGenerator;
+use ZF2rapid\Generator\FileGenerator\ClassFileGenerator;
+use ZF2rapid\Generator\CrudGenerator\CreateActionViewGenerator;
+use ZF2rapid\Generator\CrudGenerator\DeleteActionViewGenerator;
+use ZF2rapid\Generator\CrudGenerator\IndexActionViewGenerator;
+use ZF2rapid\Generator\CrudGenerator\ShowActionViewGenerator;
+use ZF2rapid\Generator\CrudGenerator\UpdateActionViewGenerator;
 use ZFrapidCore\Task\AbstractTask;
 
 /**
@@ -62,7 +62,7 @@ class GenerateViews extends AbstractTask
             }
 
             // set generator class
-            $generatorClass = 'ZF2rapid\Generator\Crud\\' . ucfirst($viewName) . 'ActionViewGenerator';
+            $generatorClass = 'ZF2rapid\Generator\CrudGenerator\\' . ucfirst($viewName) . 'ActionViewGenerator';
 
             // create class
             /** @var IndexActionViewGenerator $viewScript */

@@ -8,7 +8,7 @@
  */
 namespace ZF2rapid\Task\Crud;
 
-use ZF2rapid\Generator\Crud\InputFilterClassGenerator;
+use ZF2rapid\Generator\CrudGenerator\InputFilterClassGenerator;
 use ZF2rapid\Task\GenerateClass\AbstractGenerateClass;
 
 /**

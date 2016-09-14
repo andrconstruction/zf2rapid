@@ -8,7 +8,7 @@
  */
 namespace ZF2rapid\Task\GenerateClass;
 
-use ZF2rapid\Generator\FilterClassGenerator;
+use ZF2rapid\Generator\ClassGenerator\FilterClassGenerator;
 
 /**
  * Class GenerateFilterClass
