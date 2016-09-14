@@ -79,9 +79,13 @@ details.
 
 ### Version 0.8.0
 
-* Write tests for ZF2rapid (wip)
+* Reorganize code for ZF3rapid (wip)
 
 ### Version 0.9.0
+
+* Write tests for ZF2rapid (wip)
+
+### Version 0.10.0
 
 * Add module inspections (todo)
 
