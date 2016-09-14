@@ -22,7 +22,7 @@ class ChooseSkeletonApplication extends AbstractTask
     /**
      * URL to Zend Framework 2 Skeleton Application
      */
-    const ZF2_SKELETON_URL = 'https://github.com/zendframework/ZendSkeletonApplication/archive/master.zip';
+    const ZF2_SKELETON_URL = 'https://github.com/zendframework/ZendSkeletonApplication/archive/release-2.5.0.zip';
 
     /**
      * URL to ZF2rapid Skeleton Application

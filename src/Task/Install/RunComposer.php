@@ -31,7 +31,7 @@ class RunComposer extends AbstractTask
         exec(
             'php ' . $this->params->workingPath
             . '/composer.phar --working-dir=' . $this->params->workingPath
-            . ' install -q',
+            . ' update -q',
             $output,
             $return
         );
