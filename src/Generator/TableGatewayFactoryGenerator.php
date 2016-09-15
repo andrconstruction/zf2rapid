@@ -67,7 +67,7 @@ class TableGatewayFactoryGenerator extends ClassGenerator
         $this->addUse('Zend\Db\ResultSet\HydratingResultSet');
         $this->addUse('Zend\ServiceManager\FactoryInterface');
         $this->addUse('Zend\ServiceManager\ServiceLocatorInterface');
-        $this->addUse('Zend\Stdlib\Hydrator\HydratorPluginManager');
+        $this->addUse('Zend\Hydrator\HydratorPluginManager');
         $this->setImplementedInterfaces(['FactoryInterface']);
 
         // add methods
