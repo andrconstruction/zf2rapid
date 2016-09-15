@@ -8,7 +8,11 @@
  */
 namespace ZF2rapid\Console;
 
+use Traversable;
+use Zend\I18n\Translator\Translator;
+use ZF\Console\Dispatcher;
 use ZFrapidCore\Console\Application as ZFrapidApplication;
+use ZFrapidCore\Console\ConsoleInterface;
 
 /**
  * Class Application
@@ -31,4 +35,42 @@ class Application extends ZFrapidApplication
      * @var string
      */
     protected $version = '0.8.0';
+
+    /**
+     * Application constructor.
+     *
+     * @param string            $name
+     * @param string            $slogan
+     * @param string            $version
+     * @param array|Traversable $routes
+     * @param ConsoleInterface  $console
+     * @param Translator        $translator
+     * @param Dispatcher        $dispatcher
+     */
+    public function __construct(
+        $name, $slogan, $version, $routes, ConsoleInterface $console,
+        Translator $translator = null, Dispatcher $dispatcher = null
+    ) {
+        $this->name    = $name;
+        $this->slogan  = $slogan;
+        $this->version = $version;
+
+        parent::__construct($routes, $console, $translator, $dispatcher);
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getVersion()
+    {
+        return $this->version;
+    }
 }
