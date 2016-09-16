@@ -52,7 +52,7 @@ class RepositoryClassGenerator extends ClassGenerator
         );
 
         // add used namespaces and extended classes
-        $this->addUse('ZF2rapidDomain\Repository\AbstractRepository');
+        $this->addUse('ZFrapidDomain\Repository\AbstractRepository');
         $this->setExtendedClass('AbstractRepository');
         $this->addClassDocBlock($className, $moduleName);
     }

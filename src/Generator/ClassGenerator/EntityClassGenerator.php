@@ -67,7 +67,7 @@ class EntityClassGenerator extends ClassGenerator
         );
 
         // add used namespaces and extended classes
-        $this->addUse('ZF2rapidDomain\Entity\AbstractEntity');
+        $this->addUse('ZFrapidDomain\Entity\AbstractEntity');
         $this->setExtendedClass('AbstractEntity');
         $this->addClassDocBlock($className, $moduleName);
 

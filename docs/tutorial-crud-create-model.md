@@ -203,7 +203,7 @@ methods. The following listing is reduced to the essential.
      */
     namespace CustomerDomain\Model\Entity;
     
-    use ZF2rapidDomain\Entity\AbstractEntity;
+    use ZFrapidDomain\Entity\AbstractEntity;
     
     /**
      * CountryEntity
@@ -244,7 +244,7 @@ for the `CountryEntity`.
      */
     namespace CustomerDomain\Model\Entity;
     
-    use ZF2rapidDomain\Entity\AbstractEntity;
+    use ZFrapidDomain\Entity\AbstractEntity;
     
     /**
      * CustomerDomainEntity
@@ -310,7 +310,7 @@ for the `CountryEntity`.
     }
 
 Both entity classes extends the `AbstractEntity` class from the 
-[ZF2rapidDomain](https://github.com/ZFrapid/zf2rapid-domain) module which was 
+[ZFrapidDomain](https://github.com/ZFrapid/zf2rapid-domain) module which was 
 installed with the SkeletonApplication in the first step. The `AbstractEntity` 
 class implements the methods `exchangeArray()` and `getArrayCopy()` which
 work together with the generated hydrators. The `AbstractEntity` also provides the
@@ -468,7 +468,7 @@ the generated table gateway classes.
 
 The `/module/CustomerDomain/src/CustomerDomain/Model/TableGateway/CountryTableGateway.php` file contains 
 the `CountryTableGateway` class, which extends the `AbstractTableGateway` class from the 
-[ZF2rapidDomain](https://github.com/ZFrapid/zf2rapid-domain) module. An `getOptions()` method 
+[ZFrapidDomain](https://github.com/ZFrapid/zf2rapid-domain) module. An `getOptions()` method 
 was generated to get an option list of the data from the table.
 
     <?php
@@ -480,7 +480,7 @@ was generated to get an option list of the data from the table.
      */
     namespace CustomerDomain\Model\TableGateway;
     
-    use ZF2rapidDomain\TableGateway\AbstractTableGateway;
+    use ZFrapidDomain\TableGateway\AbstractTableGateway;
     use CustomerDomain\Model\Entity\CountryEntity;
     
     /**
@@ -520,7 +520,7 @@ instance with combines the `CountryEntity` and the `CountryHydrator`.
 
 More interesting is the `CustomerTableGateway` class from the 
 `/module/CustomerDomain/src/CustomerDomain/Model/TableGateway/CustomerTableGateway.php` file which also 
-extends the `AbstractTableGateway` class from the `ZF2rapidDomain` module. Please
+extends the `AbstractTableGateway` class from the `ZFrapidDomain` module. Please
 note the `selectWith()` method which adds a join to the `country` table to combine the 
 customer data with the country data. This joined data will be used by the `CountryStrategy` 
 to convert it into an `CountryEntity` instance.
@@ -534,7 +534,7 @@ to convert it into an `CountryEntity` instance.
      */
     namespace CustomerDomain\Model\TableGateway;
     
-    use ZF2rapidDomain\TableGateway\AbstractTableGateway;
+    use ZFrapidDomain\TableGateway\AbstractTableGateway;
     use Zend\Db\ResultSet\ResultSetInterface;
     use Zend\Db\Sql\Select;
     
@@ -636,12 +636,12 @@ with the repositories.
 
 The `/module/CustomerDomain/src/CustomerDomain/Model/Repository/CountryRepository.php` file contains 
 the `CountryRepository` class, which extends the `AbstractRepository` class from the 
-[ZF2rapidDomain](https://github.com/ZFrapid/zf2rapid-domain) module. The corresponding 
+[ZFrapidDomain](https://github.com/ZFrapid/zf2rapid-domain) module. The corresponding 
 `CountryRepositoryFactory` injects the `CountryTableGateway` instance. 
 
 In the file `/module/CustomerDomain/src/CustomerDomain/Model/Repository/CustomerRepository.php` you
 will find the `CustomerRepository` class which also extends the `AbstractRepository` class 
-from the `ZF2rapidDomain` module. The `AbstractRepository` class provides a couple of methods
+from the `ZFrapidDomain` module. The `AbstractRepository` class provides a couple of methods
 for reading and persisting entities by using the `CustomerTableGateway` instance.
 
     <?php
@@ -653,7 +653,7 @@ for reading and persisting entities by using the `CustomerTableGateway` instance
      */
     namespace CustomerDomain\Model\Repository;
     
-    use ZF2rapidDomain\Repository\AbstractRepository;
+    use ZFrapidDomain\Repository\AbstractRepository;
     
     /**
      * CustomerRepository
@@ -912,11 +912,11 @@ the country options into the input filter instance.
             /** @var ServiceLocatorAwareInterface $inputFilterManager */
             $serviceLocator = $inputFilterManager->getServiceLocator();
     
-            /** @var CountryTableGateway $countryTableGateway */
-            $countryTableGateway = $serviceLocator->get('CustomerDomain\Model\TableGateway\Country');
+            /** @var CountryStorage $countryStorage */
+            $countryStorage = $serviceLocator->get('CustomerDomain\Model\Storage\Country');
     
             $instance = new CustomerInputFilter();
-            $instance->setCountryOptions($countryTableGateway->getOptions());
+            $instance->setCountryOptions($countryStorage->getOptions());
     
             return $instance;
         }

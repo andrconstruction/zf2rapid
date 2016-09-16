@@ -57,6 +57,14 @@ class CreateModelStructure extends AbstractCreateStructureTask
         }
 
         $result = $this->createDirectory(
+            $this->params->storageDir, 'Storage'
+        );
+
+        if (!$result) {
+            return 1;
+        }
+
+        $result = $this->createDirectory(
             $this->params->repositoryDir, 'Repository'
         );
 

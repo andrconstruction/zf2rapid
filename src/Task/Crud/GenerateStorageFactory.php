@@ -10,15 +10,15 @@ namespace ZF2rapid\Task\Crud;
 
 use Zend\Console\ColorInterface as Color;
 use ZF2rapid\Generator\FileGenerator\ClassFileGenerator;
-use ZF2rapid\Generator\CrudGenerator\RepositoryFactoryGenerator;
+use ZF2rapid\Generator\CrudGenerator\StorageFactoryGenerator;
 use ZFrapidCore\Task\AbstractTask;
 
 /**
- * Class GenerateRepositoryFactory
+ * Class GenerateStorageFactory
  *
  * @package ZF2rapid\Task\GenerateFactory
  */
-class GenerateRepositoryFactory extends AbstractTask
+class GenerateStorageFactory extends AbstractTask
 {
     /**
      * Process the command
@@ -32,23 +32,22 @@ class GenerateRepositoryFactory extends AbstractTask
             $this->console->writeTaskLine(
                 'task_generate_factory_writing',
                 [
-                    'repository'
+                    'storage'
                 ]
             );
 
             // set factory file
-
-            $factoryFile = $this->params->repositoryDir . '/'
-                . $tableConfig['repositoryClass'] . 'Factory.php';
+            $factoryFile = $this->params->storageDir . '/'
+                . $tableConfig['storageClass'] . 'Factory.php';
 
             // check if factory file exists
             if (file_exists($factoryFile)) {
                 $this->console->writeFailLine(
                     'task_generate_factory_exists',
                     [
-                        'repository',
+                        'storage',
                         $this->console->colorize(
-                            $tableConfig['repositoryClass'], Color::GREEN
+                            $tableConfig['storageClass'], Color::GREEN
                         ),
                         $this->console->colorize(
                             $this->params->paramModule, Color::GREEN
@@ -60,12 +59,12 @@ class GenerateRepositoryFactory extends AbstractTask
             }
 
             // create class
-            $class = new RepositoryFactoryGenerator(
-                $tableConfig['repositoryClass'],
+            $class = new StorageFactoryGenerator(
+                $tableConfig['storageClass'],
                 $this->params->paramModule,
-                $this->params->config['namespaceRepository'],
                 $tableKey,
-                $this->params->config
+                $this->params->config,
+                $this->params->loadedTables
             );
 
             // create file
@@ -75,6 +74,7 @@ class GenerateRepositoryFactory extends AbstractTask
 
             // write file
             file_put_contents($factoryFile, $file->generate());
+
         }
 
         return 0;

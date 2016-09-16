@@ -42,6 +42,7 @@ class ConfigFile extends AbstractTask
             'namespaceHydrator'         => 'Hydrator',
             'namespaceEntity'           => 'Entity',
             'namespaceTableGateway'     => 'TableGateway',
+            'namespaceStorage'          => 'Storage',
             'namespaceRepository'       => 'Repository',
         ];
 

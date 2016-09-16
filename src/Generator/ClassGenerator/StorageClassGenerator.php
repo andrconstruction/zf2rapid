@@ -13,17 +13,15 @@ use Zend\Code\Generator\ClassGenerator;
 use Zend\Code\Generator\DocBlock\Tag\GenericTag;
 use Zend\Code\Generator\DocBlockGenerator;
 use Zend\Code\Generator\MethodGenerator;
-use Zend\Code\Generator\ParameterGenerator;
-use Zend\Db\Metadata\Object\ColumnObject;
 use Zend\Db\Metadata\Object\ConstraintObject;
 use Zend\Filter\StaticFilter;
 
 /**
- * Class TableGatewayClassGenerator
+ * Class StorageClassGenerator
  *
  * @package ZF2rapid\Generator\ClassGenerator
  */
-class TableGatewayClassGenerator extends ClassGenerator
+class StorageClassGenerator extends ClassGenerator
     implements ClassGeneratorInterface
 {
     /**
@@ -69,16 +67,16 @@ class TableGatewayClassGenerator extends ClassGenerator
         // set name and namespace
         $this->setName($className);
         $this->setNamespaceName(
-            $moduleName . '\\' . $this->config['namespaceTableGateway']
+            $moduleName . '\\' . $this->config['namespaceStorage']
         );
 
         // add used namespaces and extended classes
-        $this->addUse('ZFrapidDomain\TableGateway\AbstractTableGateway');
-        $this->setExtendedClass('AbstractTableGateway');
+        $this->addUse('ZFrapidDomain\Storage\AbstractStorage');
+        $this->setExtendedClass('AbstractStorage');
         $this->addClassDocBlock($className, $moduleName);
 
-        // add selectWith() method if needed
-        $this->addSelectWithMethod();
+        // add getOptions method if needed
+        $this->addGetOptionsMethod($moduleName);
     }
 
     /**
@@ -94,7 +92,7 @@ class TableGatewayClassGenerator extends ClassGenerator
             $this->setDocBlock(
                 new DocBlockGenerator(
                     $this->getName(),
-                    'Provides the ' . $className . ' table gateway for the '
+                    'Provides the ' . $className . ' storage for the '
                     . $moduleName . ' Module',
                     [
                         new GenericTag('package', $this->getNamespaceName()),
@@ -105,74 +103,71 @@ class TableGatewayClassGenerator extends ClassGenerator
     }
 
     /**
-     * Add a selectWith() method if table has an external dependency
+     * Add a getOptions() method if table has an external dependency
+     *
+     * @param $moduleName
      *
      * @return MethodGenerator
      */
-    protected function addSelectWithMethod()
+    protected function addGetOptionsMethod($moduleName)
     {
-        $foreignKeys = $this->loadedTables[$this->tableName]['foreignKeys'];
+        $entityClass = $this->filterUnderscoreToCamelCase($this->tableName)
+            . 'Entity';
 
-        if (empty($foreignKeys)) {
-            return true;
-        }
+        /** @var ConstraintObject $primaryKey */
+        $primaryKey = $this->loadedTables[$this->tableName]['primaryKey'];
 
-        $body = [];
+        $body   = [];
+        $body[] = '$options = [];';
+        $body[] = '';
+        $body[] = '/** @var ' . $entityClass . ' $entity */';
+        $body[] = 'foreach ($this->fetchAllEntities() as $entity) {';
+        $body[] = '    $columns = [';
 
-        /** @var ConstraintObject $foreignKey */
-        foreach ($foreignKeys as $foreignKey) {
-            $refTableName = $foreignKey->getReferencedTableName();
-
-            $refTableColumns = $this->loadedTables[$refTableName]['columns'];
-
-            $body[] = '$select->join(';
-            $body[] = '    \'' . $refTableName . '\',';
-            $body[] = '    \'' . $this->tableName . '.'
-                . $foreignKey->getColumns()[0] . ' = ' . $refTableName . '.'
-                . $foreignKey->getReferencedColumns()[0] . '\',';
-            $body[] = '    [';
-
-            
-            /** @var ColumnObject $column */
-            foreach ($refTableColumns as $column) {
-                $body[] = '        \'' . $refTableName . '.' . $column->getName(
-                    ) . '\' => \'' . $column->getName() . '\',';
+        foreach (
+            $this->loadedTables[$this->tableName]['columns'] as $columnName =>
+            $columnType
+        ) {
+            if (in_array($columnName, $primaryKey->getColumns())) {
+                continue;
             }
 
-            $body[] = '    ]';
-            $body[] = ');';
-            $body[] = '';
+            $getMethod = 'get' . ucfirst(
+                    $this->filterUnderscoreToCamelCase($columnName)
+                );
+
+            $body[] = '        $entity->' . $getMethod . '(),';
         }
 
-        $body[] = 'return parent::selectWith($select);';
+        $body[] = '    ];';
+        $body[] = '';
+        $body[]
+                = '    $options[$entity->getIdentifier()] = implode(\' \', $columns);';
+        $body[] = '}';
+        $body[] = '';
+        $body[] = 'return $options;';
 
         $body = implode(AbstractGenerator::LINE_FEED, $body);
 
-        $this->addUse('Zend\Db\ResultSet\ResultSetInterface');
-        $this->addUse('Zend\Db\Sql\Select');
-
-        $selectMethod = new MethodGenerator('selectWith');
-        $selectMethod->addFlag(MethodGenerator::FLAG_PUBLIC);
-        $selectMethod->setParameter(
-            new ParameterGenerator('select', 'Select')
+        $this->addUse(
+            $moduleName . '\\' . $this->config['namespaceEntity'] . '\\'
+            . $entityClass
         );
+
+        $selectMethod = new MethodGenerator('getOptions');
+        $selectMethod->addFlag(MethodGenerator::FLAG_PUBLIC);
         $selectMethod->setDocBlock(
             new DocBlockGenerator(
-                'Add join tables',
+                'Get option list',
                 null,
                 [
                     [
-                        'name'        => 'param',
-                        'description' => 'Select $select',
-                    ],
-                    [
                         'name'        => 'return',
-                        'description' => 'ResultSetInterface',
+                        'description' => 'array',
                     ],
                 ]
             )
         );
-
 
         $selectMethod->setBody($body);
 

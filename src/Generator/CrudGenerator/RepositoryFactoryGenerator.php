@@ -6,7 +6,7 @@
  * @copyright Copyright (c) 2014 - 2016 Ralf Eggert
  * @license   http://opensource.org/licenses/MIT The MIT License (MIT)
  */
-namespace ZF2rapid\Generator;
+namespace ZF2rapid\Generator\CrudGenerator;
 
 use Zend\Code\Generator\AbstractGenerator;
 use Zend\Code\Generator\ClassGenerator;
@@ -16,15 +16,13 @@ use Zend\Code\Generator\DocBlock\Tag\ReturnTag;
 use Zend\Code\Generator\DocBlockGenerator;
 use Zend\Code\Generator\MethodGenerator;
 use Zend\Code\Generator\ParameterGenerator;
-use Zend\Db\Metadata\Object\ConstraintObject;
-use Zend\Filter\StaticFilter;
 
 /**
- * Class TableGatewayFactoryGenerator
+ * Class RepositoryFactoryGenerator
  *
- * @package ZF2rapid\Generator
+ * @package ZF2rapid\Generator\CrudGenerator
  */
-class TableGatewayFactoryGenerator extends ClassGenerator
+class RepositoryFactoryGenerator extends ClassGenerator
 {
     /**
      * @var array
@@ -34,12 +32,13 @@ class TableGatewayFactoryGenerator extends ClassGenerator
     /**
      * @param string $className
      * @param string $moduleName
+     * @param string $namespaceName
      * @param string $tableName
      * @param array  $config
-     * @param array  $loadedTables
      */
     public function __construct(
-        $className, $moduleName, $tableName, array $config = [], array $loadedTables = []
+        $className, $moduleName, $namespaceName, $tableName,
+        array $config = []
     ) {
         // set config data
         $this->config = $config;
@@ -47,31 +46,20 @@ class TableGatewayFactoryGenerator extends ClassGenerator
         // call parent constructor
         parent::__construct(
             $className . 'Factory',
-            $moduleName . '\\' . $this->config['namespaceTableGateway']
+            $moduleName . '\\' . $namespaceName
         );
 
         // add used namespaces and extended classes
         $this->addUse(
-            $moduleName . '\\' . $this->config['namespaceEntity'] . '\\'
-            . StaticFilter::execute(
-                $tableName, 'Word\UnderscoreToCamelCase'
-            ) . 'Entity'
+            $moduleName . '\\' . $this->config['namespaceStorage'] . '\\'
+            . ucfirst($tableName) . 'Storage'
         );
-        $this->addUse(
-            $moduleName . '\\' . $this->config['namespaceHydrator'] . '\\'
-            . StaticFilter::execute(
-                $tableName, 'Word\UnderscoreToCamelCase'
-            ) . 'Hydrator'
-        );
-        $this->addUse('Zend\Db\Adapter\AdapterInterface');
-        $this->addUse('Zend\Db\ResultSet\HydratingResultSet');
         $this->addUse('Zend\ServiceManager\FactoryInterface');
         $this->addUse('Zend\ServiceManager\ServiceLocatorInterface');
-        $this->addUse('Zend\Hydrator\HydratorPluginManager');
         $this->setImplementedInterfaces(['FactoryInterface']);
 
         // add methods
-        $this->addCreateServiceMethod($className, $moduleName, $tableName, $loadedTables[$tableName]);
+        $this->addCreateServiceMethod($className, $moduleName, $tableName);
         $this->addClassDocBlock($className);
     }
 
@@ -102,47 +90,22 @@ class TableGatewayFactoryGenerator extends ClassGenerator
      * @param string $className
      * @param string $moduleName
      * @param string $tableName
-     * @param array  $loadedTable
      */
-    protected function addCreateServiceMethod(
-        $className, $moduleName, $tableName, array $loadedTable = []
-    ) {
-        /** @var ConstraintObject $primaryKey */
-        $primaryKey     = $loadedTable['primaryKey'];
-        $primaryColumns = $primaryKey->getColumns();
-
-        $managerName     = 'serviceLocator';
-        $hydratorName    = StaticFilter::execute(
-                $tableName, 'Word\UnderscoreToCamelCase'
-            ) . 'Hydrator';
-        $hydratorService = $moduleName . '\\' . StaticFilter::execute(
-                $tableName, 'Word\UnderscoreToCamelCase'
-            );
-        $entityName      = StaticFilter::execute(
-                $tableName, 'Word\UnderscoreToCamelCase'
-            ) . 'Entity';
+    protected function addCreateServiceMethod($className, $moduleName, $tableName)
+    {
+        $managerName    = 'serviceLocator';
+        $storageName    = ucfirst($tableName) . 'Storage';
+        $storageService = $moduleName . '\\' . $this->config['namespaceStorage'] . '\\' . ucfirst($tableName);
 
         // set action body
-        $body   = [];
-        $body[] = '/** @var HydratorPluginManager $hydratorManager */';
-        $body[] = '$hydratorManager = $serviceLocator->get(\'HydratorManager\');';
-        $body[] = '';
-        $body[] = '/** @var AdapterInterface $dbAdapter */';
-        $body[] = '$dbAdapter = $serviceLocator->get(\'Zend\Db\Adapter\Adapter\');';
-        $body[] = '';
-        $body[] = '/** @var ' . $hydratorName . ' $hydrator */';
-        $body[] = '$hydrator  = $hydratorManager->get(\'' . $hydratorService . '\');';
-        $body[] = '$entity    = new ' . $entityName . '();';
-        $body[] = '$resultSet = new HydratingResultSet($hydrator, $entity);';
-        $body[] = '';
-        $body[] = '$instance = new ' . $className . '(';
-        $body[] = '    \'' . $tableName . '\', $dbAdapter, null, $resultSet';
-        $body[] = ');';
-        $body[] = '$instance->setHydrator($hydrator);';
-        $body[] = '$instance->setPrimaryKey(\'' . $tableName . '.' . $primaryColumns[0] . '\');';
-        $body[] = '';
-        $body[] = 'return $instance;';
-
+        $body = [
+            '/** @var ' . $storageName . ' $storage */',
+            '$storage = $serviceLocator->get(\'' . $storageService . '\');',
+            '',
+            '$instance = new ' . $className . '($storage);',
+            '',
+            'return $instance;',
+        ];
         $body = implode(AbstractGenerator::LINE_FEED, $body);
 
         // create method
