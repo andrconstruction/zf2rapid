@@ -83,8 +83,8 @@ class DataFormFactoryGenerator extends ClassGenerator
         // add namespaces for foreign key tables
         foreach ($this->foreignKeys as $foreignKey) {
             $this->addUse(
-                $entityModule . '\\' . $this->config['namespaceTableGateway'] . '\\'
-                . $this->filterUnderscoreToCamelCase($foreignKey->getReferencedTableName()) . 'TableGateway'
+                $entityModule . '\\' . $this->config['namespaceStorage'] . '\\'
+                . $this->filterUnderscoreToCamelCase($foreignKey->getReferencedTableName()) . 'Storage'
             );
         }
 
@@ -93,7 +93,7 @@ class DataFormFactoryGenerator extends ClassGenerator
         $this->addUse('Zend\ServiceManager\FactoryInterface');
         $this->addUse('Zend\ServiceManager\ServiceLocatorAwareInterface');
         $this->addUse('Zend\ServiceManager\ServiceLocatorInterface');
-        $this->addUse('Zend\Stdlib\Hydrator\HydratorPluginManager');
+        $this->addUse('Zend\Hydrator\HydratorPluginManager');
         $this->setImplementedInterfaces(['FactoryInterface']);
 
         // add methods
@@ -152,16 +152,16 @@ class DataFormFactoryGenerator extends ClassGenerator
 
         /** @var ConstraintObject $foreignKey */
         foreach ($this->foreignKeys as $foreignKey) {
-            $tableGatewayName    = $this->filterUnderscoreToCamelCase($foreignKey->getReferencedTableName()) . 'TableGateway';
-            $tableGatewayService = $entityModule . '\\' . $this->config['namespaceTableGateway'] . '\\' . $this->filterUnderscoreToCamelCase(
+            $storageName    = $this->filterUnderscoreToCamelCase($foreignKey->getReferencedTableName()) . 'Storage';
+            $storageService = $entityModule . '\\' . $this->config['namespaceStorage'] . '\\' . $this->filterUnderscoreToCamelCase(
                     $foreignKey->getReferencedTableName()
                 );
-            $tableGatewayParam   = lcfirst($this->filterUnderscoreToCamelCase(
+            $storageParam   = lcfirst($this->filterUnderscoreToCamelCase(
                     $foreignKey->getReferencedTableName()
-                )) . 'TableGateway';
+                )) . 'Storage';
 
-            $body[] = '/** @var ' . $tableGatewayName . ' $' . $tableGatewayParam . ' */';
-            $body[] = '$' . $tableGatewayParam . ' = $serviceLocator->get(\'' . $tableGatewayService . '\');';
+            $body[] = '/** @var ' . $storageName . ' $' . $storageParam . ' */';
+            $body[] = '$' . $storageParam . ' = $serviceLocator->get(\'' . $storageService . '\');';
             $body[] = '';
         }
 
@@ -175,9 +175,9 @@ class DataFormFactoryGenerator extends ClassGenerator
 
         /** @var ConstraintObject $foreignKey */
         foreach ($this->foreignKeys as $foreignKey) {
-            $tableGatewayParam = lcfirst($this->filterUnderscoreToCamelCase(
+            $storageParam = lcfirst($this->filterUnderscoreToCamelCase(
                     $foreignKey->getReferencedTableName()
-                )) . 'TableGateway';
+                )) . 'Storage';
 
             $foreignKeyColumns = $foreignKey->getColumns();
 
@@ -185,7 +185,7 @@ class DataFormFactoryGenerator extends ClassGenerator
                         array_pop($foreignKeyColumns)
                 ) . 'Options';
 
-            $body[] = '$instance->' . $setterOption . '($' . $tableGatewayParam . '->getOptions());';
+            $body[] = '$instance->' . $setterOption . '($' . $storageParam . '->getOptions());';
         }
 
         $body[] = '$instance->setHydrator($hydrator);';

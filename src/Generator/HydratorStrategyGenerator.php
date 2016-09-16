@@ -80,7 +80,7 @@ class HydratorStrategyGenerator extends ClassGenerator
         );
 
         // add used namespaces and extended classes
-        $this->addUse('Zend\Stdlib\Hydrator\Strategy\StrategyInterface');
+        $this->addUse('Zend\Hydrator\Strategy\StrategyInterface');
         $this->addUse(
             $moduleName . '\\' . $this->config['namespaceEntity'] . '\\'
             . $this->entityClass

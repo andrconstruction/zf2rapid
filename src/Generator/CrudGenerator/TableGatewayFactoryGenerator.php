@@ -20,11 +20,11 @@ use Zend\Db\Metadata\Object\ConstraintObject;
 use Zend\Filter\StaticFilter;
 
 /**
- * Class InputFilterFactoryGenerator
+ * Class TableGatewayFactoryGenerator
  *
  * @package ZF2rapid\Generator\CrudGenerator
  */
-class InputFilterFactoryGenerator extends ClassGenerator
+class TableGatewayFactoryGenerator extends ClassGenerator
 {
     /**
      * @var array
@@ -32,63 +32,46 @@ class InputFilterFactoryGenerator extends ClassGenerator
     protected $config = [];
 
     /**
-     * @var array
-     */
-    protected $loadedTable;
-
-    /**
-     * @var array
-     */
-    protected $foreignKeys;
-
-    /**
      * @param string $className
      * @param string $moduleName
-     * @param string $namespaceName
      * @param string $tableName
-     * @param array  $loadedTable
      * @param array  $config
+     * @param array  $loadedTables
      */
     public function __construct(
-        $className, $moduleName, $namespaceName, $tableName, array $loadedTable = [], array $config = []
+        $className, $moduleName, $tableName, array $config = [], array $loadedTables = []
     ) {
         // set config data
-        $this->config      = $config;
-        $this->loadedTable = $loadedTable;
-
-        $this->foreignKeys = [];
-
-        /** @var ConstraintObject $foreignKey */
-        foreach ($this->loadedTable['foreignKeys'] as $foreignKey) {
-            foreach ($foreignKey->getColumns() as $column) {
-                $this->foreignKeys[$column] = $foreignKey;
-            }
-        }
+        $this->config = $config;
 
         // call parent constructor
         parent::__construct(
             $className . 'Factory',
-            $moduleName . '\\' . $namespaceName
+            $moduleName . '\\' . $this->config['namespaceTableGateway']
         );
 
-        // add namespaces for foreign key tables
-        foreach ($this->foreignKeys as $foreignKey) {
-            $this->addUse(
-                $moduleName . '\\' . $this->config['namespaceStorage'] . '\\'
-                . StaticFilter::execute(
-                    $foreignKey->getReferencedTableName(), 'Word\UnderscoreToCamelCase'
-                ) . 'Storage'
-            );
-        }
-
         // add used namespaces and extended classes
+        $this->addUse(
+            $moduleName . '\\' . $this->config['namespaceEntity'] . '\\'
+            . StaticFilter::execute(
+                $tableName, 'Word\UnderscoreToCamelCase'
+            ) . 'Entity'
+        );
+        $this->addUse(
+            $moduleName . '\\' . $this->config['namespaceHydrator'] . '\\'
+            . StaticFilter::execute(
+                $tableName, 'Word\UnderscoreToCamelCase'
+            ) . 'Hydrator'
+        );
+        $this->addUse('Zend\Db\Adapter\AdapterInterface');
+        $this->addUse('Zend\Db\ResultSet\HydratingResultSet');
         $this->addUse('Zend\ServiceManager\FactoryInterface');
-        $this->addUse('Zend\ServiceManager\ServiceLocatorAwareInterface');
         $this->addUse('Zend\ServiceManager\ServiceLocatorInterface');
+        $this->addUse('Zend\Hydrator\HydratorPluginManager');
         $this->setImplementedInterfaces(['FactoryInterface']);
 
         // add methods
-        $this->addCreateServiceMethod($className, $moduleName);
+        $this->addCreateServiceMethod($className, $moduleName, $tableName, $loadedTables[$tableName]);
         $this->addClassDocBlock($className);
     }
 
@@ -118,47 +101,43 @@ class InputFilterFactoryGenerator extends ClassGenerator
      *
      * @param string $className
      * @param string $moduleName
+     * @param string $tableName
+     * @param array  $loadedTable
      */
-    protected function addCreateServiceMethod($className, $moduleName)
-    {
-        $managerName = 'inputFilterManager';
+    protected function addCreateServiceMethod(
+        $className, $moduleName, $tableName, array $loadedTable = []
+    ) {
+        /** @var ConstraintObject $primaryKey */
+        $primaryKey     = $loadedTable['primaryKey'];
+        $primaryColumns = $primaryKey->getColumns();
+
+        $managerName     = 'serviceLocator';
+        $hydratorName    = StaticFilter::execute(
+                $tableName, 'Word\UnderscoreToCamelCase'
+            ) . 'Hydrator';
+        $hydratorService = $moduleName . '\\' . StaticFilter::execute(
+                $tableName, 'Word\UnderscoreToCamelCase'
+            );
+        $entityName      = StaticFilter::execute(
+                $tableName, 'Word\UnderscoreToCamelCase'
+            ) . 'Entity';
 
         // set action body
         $body   = [];
-        $body[] = '$serviceLocator = $' . $managerName . '->getServiceLocator();';
+        $body[] = '/** @var HydratorPluginManager $hydratorManager */';
+        $body[] = '$hydratorManager = $serviceLocator->get(\'HydratorManager\');';
         $body[] = '';
-
-        /** @var ConstraintObject $foreignKey */
-        foreach ($this->foreignKeys as $foreignKey) {
-            $storageName    = StaticFilter::execute(
-                    $foreignKey->getReferencedTableName(), 'Word\UnderscoreToCamelCase'
-                ) . 'Storage';
-            $storageService = $moduleName . '\\' . $this->config['namespaceStorage'] . '\\' . StaticFilter::execute(
-                    $foreignKey->getReferencedTableName(), 'Word\UnderscoreToCamelCase'
-                );
-            $storageParam   = lcfirst(StaticFilter::execute(
-                    $foreignKey->getReferencedTableName(), 'Word\UnderscoreToCamelCase'
-                )) . 'Storage';
-
-            $body[] = '/** @var ' . $storageName . ' $' . $storageParam . ' */';
-            $body[] = '$' . $storageParam . ' = $serviceLocator->get(\'' . $storageService . '\');';
-            $body[] = '';
-        }
-
-        $body[] = '$instance = new ' . $className . '();';
-
-        /** @var ConstraintObject $foreignKey */
-        foreach ($this->foreignKeys as $foreignKey) {
-            $storageParam = lcfirst(
-                    StaticFilter::execute($foreignKey->getReferencedTableName(), 'Word\UnderscoreToCamelCase')
-                ) . 'Storage';
-            $setterOption      = 'set' . StaticFilter::execute(
-                    $foreignKey->getReferencedTableName(), 'Word\UnderscoreToCamelCase'
-                ) . 'Options';
-
-            $body[] = '$instance->' . $setterOption . '(array_keys($' . $storageParam . '->getOptions()));';
-        }
-
+        $body[] = '/** @var AdapterInterface $dbAdapter */';
+        $body[] = '$dbAdapter = $serviceLocator->get(\'Zend\Db\Adapter\Adapter\');';
+        $body[] = '';
+        $body[] = '/** @var ' . $hydratorName . ' $hydrator */';
+        $body[] = '$hydrator  = $hydratorManager->get(\'' . $hydratorService . '\');';
+        $body[] = '$entity    = new ' . $entityName . '();';
+        $body[] = '$resultSet = new HydratingResultSet($hydrator, $entity);';
+        $body[] = '';
+        $body[] = '$instance = new ' . $className . '(';
+        $body[] = '    \'' . $tableName . '.' . $primaryColumns[0] . '\', \'' . $tableName . '\', $dbAdapter, $resultSet';
+        $body[] = ');';
         $body[] = '';
         $body[] = 'return $instance;';
 
@@ -187,7 +166,6 @@ class InputFilterFactoryGenerator extends ClassGenerator
                             $managerName,
                             [
                                 'ServiceLocatorInterface',
-                                'ServiceLocatorAwareInterface',
                             ]
                         ),
                         new ReturnTag([$className]),

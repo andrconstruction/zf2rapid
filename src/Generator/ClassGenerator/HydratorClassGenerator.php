@@ -65,7 +65,7 @@ class HydratorClassGenerator extends ClassGenerator
         );
 
         // add used namespaces and extended classes
-        $this->addUse('Zend\Stdlib\Hydrator\\' . $this->baseHydrator);
+        $this->addUse('Zend\Hydrator\\' . $this->baseHydrator);
         $this->setExtendedClass($this->baseHydrator);
 
         // add methods

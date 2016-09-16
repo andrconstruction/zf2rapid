@@ -10,7 +10,6 @@ namespace ZF2rapid\Task\Tool;
 
 use Zend\Console\ColorInterface as Color;
 use ZFrapidCore\Task\AbstractTask;
-use ZF2rapid\Console\Application;
 
 /**
  * Class Version
@@ -28,8 +27,8 @@ class Version extends AbstractTask
         $this->console->writeTaskLine(
             'task_tool_version_show',
             [
-                $this->console->colorize(Application::NAME, Color::GREEN),
-                $this->console->colorize(Application::VERSION, Color::BLUE)
+                $this->console->colorize(APPLICATION_NAME, Color::GREEN),
+                $this->console->colorize(APPLICATION_VERSION, Color::BLUE)
             ]
         );
 

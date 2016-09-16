@@ -36,6 +36,8 @@ class CreateModel extends AbstractCommand
             'ZF2rapid\Task\Crud\GenerateHydratorFactory',
             'ZF2rapid\Task\Crud\GenerateTableGatewayClass',
             'ZF2rapid\Task\Crud\GenerateTableGatewayFactory',
+            'ZF2rapid\Task\Crud\GenerateStorageClass',
+            'ZF2rapid\Task\Crud\GenerateStorageFactory',
             'ZF2rapid\Task\Crud\GenerateRepositoryClass',
             'ZF2rapid\Task\Crud\GenerateRepositoryFactory',
             'ZF2rapid\Task\Crud\GenerateInputFilterClass',

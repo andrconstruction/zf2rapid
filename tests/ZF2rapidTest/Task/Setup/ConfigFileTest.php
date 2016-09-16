@@ -161,6 +161,7 @@ class ConfigFileTest extends PHPUnit_Framework_TestCase
             'namespaceHydrator'         => 'Hydrator',
             'namespaceEntity'           => 'Entity',
             'namespaceTableGateway'     => 'TableGateway',
+            'namespaceStorage'          => 'Storage',
             'namespaceRepository'       => 'Repository',
         ];
 
@@ -221,6 +222,7 @@ class ConfigFileTest extends PHPUnit_Framework_TestCase
                 'namespaceHydrator'         => 'Hydrator',
                 'namespaceEntity'           => 'Entity',
                 'namespaceTableGateway'     => 'TableGateway',
+                'namespaceStorage'          => 'Storage',
                 'namespaceRepository'       => 'Repository',
             ]
         );

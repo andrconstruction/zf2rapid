@@ -116,6 +116,7 @@ The following configuration keys can be changed for your current project:
 | namespaceHydrator         | namespace for all hydrator classes within a module          |
 | namespaceEntity           | namespace for all entity classes within a module            |
 | namespaceTableGateway     | namespace for all table gateway classes within a module     |
+| namespaceStorage          | namespace for all storage classes within a module        |
 | namespaceRepository       | namespace for all repository classes within a module        |
 
 First, we want to change the data for the file doc blocks.
@@ -136,6 +137,7 @@ classes that we will create later on.
     $ zf2rapid tool-config --configKey=namespaceHydrator --configValue="Model\\Hydrator"
     $ zf2rapid tool-config --configKey=namespaceEntity --configValue="Model\\Entity"
     $ zf2rapid tool-config --configKey=namespaceTableGateway --configValue="Model\\TableGateway"
+    $ zf2rapid tool-config --configKey=namespaceStorage --configValue="Model\\Storage"
     $ zf2rapid tool-config --configKey=namespaceRepository --configValue="Model\\Repository"
 
 Your console screen should look similar to this, after changing the project 
@@ -164,6 +166,7 @@ the file should look like this:
       "namespaceHydrator": "Model\\Hydrator",
       "namespaceEntity": "Model\\Entity",
       "namespaceTableGateway": "Model\\TableGateway",
+      "namespaceStorage": "Model\\Storage",
       "namespaceRepository": "Model\\Repository"
     }
 

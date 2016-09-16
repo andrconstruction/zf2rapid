@@ -296,6 +296,7 @@ class Params extends AbstractTask
                 $config['entityClass']       = $tableClass . 'Entity';
                 $config['hydratorClass']     = $tableClass . 'Hydrator';
                 $config['tableGatewayClass'] = $tableClass . 'TableGateway';
+                $config['storageClass']      = $tableClass . 'Storage';
                 $config['repositoryClass']   = $tableClass . 'Repository';
                 $config['inputFilterClass']  = $tableClass . 'InputFilter';
 
@@ -327,6 +328,14 @@ class Params extends AbstractTask
                     '\\',
                     DIRECTORY_SEPARATOR,
                     $this->params->config['namespaceTableGateway']
+                );
+
+            $this->params->storageDir = $this->params->moduleSrcDir
+                . DIRECTORY_SEPARATOR
+                . str_replace(
+                    '\\',
+                    DIRECTORY_SEPARATOR,
+                    $this->params->config['namespaceStorage']
                 );
 
             $this->params->repositoryDir = $this->params->moduleSrcDir

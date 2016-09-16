@@ -73,6 +73,7 @@ The following configuration keys can be changed for your current project:
 | namespaceHydrator         | namespace for all hydrator classes within a module          |
 | namespaceEntity           | namespace for all entity classes within a module            |
 | namespaceTableGateway     | namespace for all table gateway classes within a module     |
+| namespaceStorage          | namespace for all storage classes within a module        |
 | namespaceRepository       | namespace for all repository classes within a module        |
 
 ## Modules

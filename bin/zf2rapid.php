@@ -14,6 +14,9 @@ use ZFrapidCore\Console\Console;
 
 // define application root
 define('ZF2RAPID_ROOT', __DIR__ . '/..');
+define('APPLICATION_NAME', 'ZF2rapid');
+define('APPLICATION_SLOGAN', 'Rapid Application Development Tool for the ZF2');
+define('APPLICATION_VERSION', '0.8.0');
 
 // get vendor autoloading
 if (file_exists(ZF2RAPID_ROOT . '/vendor/autoload.php')) {
@@ -43,6 +46,9 @@ $console->setTranslator($translator);
 
 // configure applications
 $application = new Application(
+    APPLICATION_NAME,
+    APPLICATION_SLOGAN,
+    APPLICATION_VERSION,
     include ZF2RAPID_ROOT . '/config/routes.php',
     $console,
     $translator

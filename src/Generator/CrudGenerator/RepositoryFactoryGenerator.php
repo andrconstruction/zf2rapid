@@ -6,7 +6,7 @@
  * @copyright Copyright (c) 2014 - 2016 Ralf Eggert
  * @license   http://opensource.org/licenses/MIT The MIT License (MIT)
  */
-namespace ZF2rapid\Generator;
+namespace ZF2rapid\Generator\CrudGenerator;
 
 use Zend\Code\Generator\AbstractGenerator;
 use Zend\Code\Generator\ClassGenerator;
@@ -20,7 +20,7 @@ use Zend\Code\Generator\ParameterGenerator;
 /**
  * Class RepositoryFactoryGenerator
  *
- * @package ZF2rapid\Generator
+ * @package ZF2rapid\Generator\CrudGenerator
  */
 class RepositoryFactoryGenerator extends ClassGenerator
 {
@@ -51,8 +51,8 @@ class RepositoryFactoryGenerator extends ClassGenerator
 
         // add used namespaces and extended classes
         $this->addUse(
-            $moduleName . '\\' . $this->config['namespaceTableGateway'] . '\\'
-            . ucfirst($tableName) . 'TableGateway'
+            $moduleName . '\\' . $this->config['namespaceStorage'] . '\\'
+            . ucfirst($tableName) . 'Storage'
         );
         $this->addUse('Zend\ServiceManager\FactoryInterface');
         $this->addUse('Zend\ServiceManager\ServiceLocatorInterface');
@@ -93,16 +93,16 @@ class RepositoryFactoryGenerator extends ClassGenerator
      */
     protected function addCreateServiceMethod($className, $moduleName, $tableName)
     {
-        $managerName      = 'serviceLocator';
-        $tableGatewayName = ucfirst($tableName) . 'TableGateway';
-        $tableGatewayService = $moduleName . '\\' . $this->config['namespaceTableGateway'] . '\\' . ucfirst($tableName);
+        $managerName    = 'serviceLocator';
+        $storageName    = ucfirst($tableName) . 'Storage';
+        $storageService = $moduleName . '\\' . $this->config['namespaceStorage'] . '\\' . ucfirst($tableName);
 
         // set action body
         $body = [
-            '/** @var ' . $tableGatewayName . ' $tableGateway */',
-            '$tableGateway = $serviceLocator->get(\'' . $tableGatewayService . '\');',
+            '/** @var ' . $storageName . ' $storage */',
+            '$storage = $serviceLocator->get(\'' . $storageService . '\');',
             '',
-            '$instance = new ' . $className . '($tableGateway);',
+            '$instance = new ' . $className . '($storage);',
             '',
             'return $instance;',
         ];

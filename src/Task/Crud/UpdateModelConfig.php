@@ -61,6 +61,21 @@ class UpdateModelConfig extends AbstractUpdateServiceManagerConfig
             }
 
             $configKey = $this->params->paramModule . '\\'
+                . $this->params->config['namespaceStorage'] . '\\'
+                . $this->filterUnderscoreToCamelCase($tableKey);
+
+            $result = $this->updateConfig(
+                'service_manager',
+                $configKey,
+                $tableConfig['storageClass'],
+                $this->params->config['namespaceStorage']
+            );
+
+            if (!$result) {
+                return 1;
+            }
+
+            $configKey = $this->params->paramModule . '\\'
                 . $this->params->config['namespaceRepository'] . '\\'
                 . $this->filterUnderscoreToCamelCase($tableKey);
 

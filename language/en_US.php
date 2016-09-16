@@ -140,7 +140,7 @@ return [
     'route_crud_show_tables_description'                       => 'Show all tables in the database for the current database connection',
     'route_crud_show_tables_short_description'                 => 'Show tables in database',
 
-    'route_crud_create_model_description'                      => 'Create all model classes (entity, hydrator, table gateway, repository) for a database table',
+    'route_crud_create_model_description'                      => 'Create all model classes (entity, hydrator, table gateway, storage, repository) for a database table',
     'route_crud_create_model_short_description'                => 'Create model class for database table',
     'route_crud_create_model_option_module'                    => 'The name of the module to create the model classes in; mandatory',
     'route_crud_create_model_option_tables'                    => 'The names of the database tables to create the model classes for; mandatory',
